@@ -650,15 +650,15 @@
         <window title="TFDatePickerTest" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" animationBehavior="default" id="371">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-            <rect key="contentRect" x="335" y="390" width="679" height="200"/>
+            <rect key="contentRect" x="335" y="390" width="679" height="234"/>
             <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1058"/>
             <value key="minSize" type="size" width="644" height="62"/>
             <view key="contentView" id="372">
-                <rect key="frame" x="0.0" y="0.0" width="679" height="200"/>
+                <rect key="frame" x="0.0" y="0.0" width="679" height="234"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <button horizontalHuggingPriority="249" translatesAutoresizingMaskIntoConstraints="NO" id="536">
-                        <rect key="frame" x="594" y="129" width="67" height="18"/>
+                        <rect key="frame" x="594" y="163" width="67" height="18"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="63" id="QSl-4o-L2z"/>
@@ -672,7 +672,7 @@
                         </connections>
                     </button>
                     <textField horizontalHuggingPriority="249" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="611">
-                        <rect key="frame" x="20" y="128" width="231" height="22"/>
+                        <rect key="frame" x="20" y="162" width="231" height="22"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="Some text to demonstrate autolayout" drawsBackground="YES" id="612">
                             <font key="font" metaFont="system"/>
@@ -681,7 +681,7 @@
                         </textFieldCell>
                     </textField>
                     <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="639">
-                        <rect key="frame" x="350" y="131" width="17" height="17"/>
+                        <rect key="frame" x="350" y="165" width="17" height="17"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="13" id="lDz-VE-KjV"/>
@@ -693,7 +693,7 @@
                         </textFieldCell>
                     </textField>
                     <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="SHH-Jm-7L2">
-                        <rect key="frame" x="259" y="91" width="400" height="22"/>
+                        <rect key="frame" x="259" y="125" width="400" height="22"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="400" id="aT6-kk-Txf"/>
@@ -708,7 +708,7 @@
                         </connections>
                     </textField>
                     <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="sfW-Zi-XQN">
-                        <rect key="frame" x="259" y="59" width="400" height="22"/>
+                        <rect key="frame" x="259" y="93" width="400" height="22"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="UeL-n4-j5P">
                             <font key="font" metaFont="system"/>
@@ -720,7 +720,7 @@
                         </connections>
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="1JM-AA-Qwa">
-                        <rect key="frame" x="128" y="93" width="125" height="17"/>
+                        <rect key="frame" x="128" y="127" width="125" height="17"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="From date binding:" id="dbJ-wb-C72">
                             <font key="font" metaFont="system"/>
@@ -729,7 +729,7 @@
                         </textFieldCell>
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="PeZ-ml-ZCO">
-                        <rect key="frame" x="145" y="61" width="108" height="17"/>
+                        <rect key="frame" x="145" y="95" width="108" height="17"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="To date binding:" id="2wO-2v-TIc">
                             <font key="font" metaFont="system"/>
@@ -738,7 +738,7 @@
                         </textFieldCell>
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="sBV-PK-MQL">
-                        <rect key="frame" x="117" y="24" width="136" height="17"/>
+                        <rect key="frame" x="117" y="58" width="136" height="17"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Non nil with stepper:" id="Ltd-g7-mg3">
                             <font key="font" metaFont="system"/>
@@ -747,14 +747,14 @@
                         </textFieldCell>
                     </textField>
                     <datePicker verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="z1s-o9-owC" customClass="TFDatePicker">
-                        <rect key="frame" x="259" y="21" width="403" height="27"/>
+                        <rect key="frame" x="259" y="55" width="403" height="27"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <datePickerCell key="cell" borderStyle="bezel" alignment="left" id="nGh-h0-0vg" customClass="TFDatePickerCell">
                             <font key="font" metaFont="system"/>
                             <calendarDate key="date" timeIntervalSinceReferenceDate="-595929600" calendarFormat="%Y-%m-%d %H:%M:%S %z">
                                 <!--1982-02-12 08:00:00 -0800-->
                                 <timeZone key="timeZone" name="US/Pacific">
-                                    <mutableData key="data">
+                                    <data key="data">
 VFppZgAAAAAAAAAAAAAAAAAAAAAAAAAEAAAABAAAAAAAAAC5AAAABAAAABCepkign7sVkKCGKqChmveQ
 y4kaoNIj9HDSYSYQ1v50INiArZDa/tGg28CQENzes6DdqayQ3r6VoN+JjpDgnneg4WlwkOJ+WaDjSVKQ
 5F47oOUpNJDmR1gg5xJREOgnOiDo8jMQ6gccIOrSFRDr5v4g7LH3EO3G4CDukdkQ76/8oPBxuxDxj96g
@@ -772,7 +772,7 @@ f5gqkAABAAECAwEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEA
 AQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEA
 AQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEA
 AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
-</mutableData>
+</data>
                                 </timeZone>
                             </calendarDate>
                             <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -780,7 +780,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                         </datePickerCell>
                     </datePicker>
                     <datePicker verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="D5a-5h-bfi" customClass="TFDatePicker">
-                        <rect key="frame" x="440" y="128" width="148" height="22"/>
+                        <rect key="frame" x="440" y="162" width="148" height="22"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="148" id="eJY-Mi-TeK"/>
@@ -790,7 +790,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                             <calendarDate key="date" timeIntervalSinceReferenceDate="-595929600" calendarFormat="%Y-%m-%d %H:%M:%S %z">
                                 <!--1982-02-12 08:00:00 -0800-->
                                 <timeZone key="timeZone" name="US/Pacific">
-                                    <mutableData key="data">
+                                    <data key="data">
 VFppZgAAAAAAAAAAAAAAAAAAAAAAAAAEAAAABAAAAAAAAAC5AAAABAAAABCepkign7sVkKCGKqChmveQ
 y4kaoNIj9HDSYSYQ1v50INiArZDa/tGg28CQENzes6DdqayQ3r6VoN+JjpDgnneg4WlwkOJ+WaDjSVKQ
 5F47oOUpNJDmR1gg5xJREOgnOiDo8jMQ6gccIOrSFRDr5v4g7LH3EO3G4CDukdkQ76/8oPBxuxDxj96g
@@ -808,7 +808,7 @@ f5gqkAABAAECAwEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEA
 AQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEA
 AQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEA
 AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
-</mutableData>
+</data>
                                 </timeZone>
                             </calendarDate>
                             <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -823,14 +823,14 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                         </connections>
                     </datePicker>
                     <datePicker horizontalHuggingPriority="249" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="cMQ-fa-E0R" customClass="TFDatePicker">
-                        <rect key="frame" x="259" y="128" width="85" height="22"/>
+                        <rect key="frame" x="259" y="162" width="85" height="22"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <datePickerCell key="cell" borderStyle="bezel" alignment="left" datePickerStyle="textField" id="6Qc-Ak-Xn6" customClass="TFDatePickerCell">
                             <font key="font" metaFont="system"/>
                             <calendarDate key="date" timeIntervalSinceReferenceDate="-595929600" calendarFormat="%Y-%m-%d %H:%M:%S %z">
                                 <!--1982-02-12 08:00:00 -0800-->
                                 <timeZone key="timeZone" name="US/Pacific">
-                                    <mutableData key="data">
+                                    <data key="data">
 VFppZgAAAAAAAAAAAAAAAAAAAAAAAAAEAAAABAAAAAAAAAC5AAAABAAAABCepkign7sVkKCGKqChmveQ
 y4kaoNIj9HDSYSYQ1v50INiArZDa/tGg28CQENzes6DdqayQ3r6VoN+JjpDgnneg4WlwkOJ+WaDjSVKQ
 5F47oOUpNJDmR1gg5xJREOgnOiDo8jMQ6gccIOrSFRDr5v4g7LH3EO3G4CDukdkQ76/8oPBxuxDxj96g
@@ -848,7 +848,7 @@ f5gqkAABAAECAwEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEA
 AQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEA
 AQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEA
 AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
-</mutableData>
+</data>
                                 </timeZone>
                             </calendarDate>
                             <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -863,7 +863,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                         </connections>
                     </datePicker>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="3TA-eG-8FO">
-                        <rect key="frame" x="259" y="163" width="87" height="17"/>
+                        <rect key="frame" x="259" y="197" width="87" height="17"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Intrinsic size:" id="P71-WI-0Zf">
                             <font key="font" metaFont="system"/>
@@ -872,7 +872,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                         </textFieldCell>
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Xvc-jp-ubL">
-                        <rect key="frame" x="438" y="163" width="113" height="17"/>
+                        <rect key="frame" x="438" y="197" width="113" height="17"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Constrained size:" id="yNn-uA-KPA">
                             <font key="font" metaFont="system"/>
@@ -881,7 +881,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                         </textFieldCell>
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="j4w-jZ-fBW">
-                        <rect key="frame" x="70" y="163" width="183" height="17"/>
+                        <rect key="frame" x="70" y="197" width="183" height="17"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Pickers that accept nil input:" id="z4k-6N-A80">
                             <font key="font" metaFont="system"/>
@@ -889,12 +889,21 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="P1g-ro-eqe">
+                        <rect key="frame" x="321" y="30" width="340" height="17"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="All selected dates will be normalised to midnight UTC" id="MYA-4g-Ks8">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="disabledControlTextColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
                 </subviews>
                 <constraints>
                     <constraint firstItem="611" firstAttribute="leading" secondItem="372" secondAttribute="leading" priority="250" constant="20" symbolic="YES" id="0M9-ma-WxM"/>
-                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="z1s-o9-owC" secondAttribute="bottom" constant="21" id="1wO-ps-gxG"/>
                     <constraint firstItem="536" firstAttribute="bottom" secondItem="639" secondAttribute="bottom" id="262-e7-46O"/>
                     <constraint firstItem="cMQ-fa-E0R" firstAttribute="leading" secondItem="3TA-eG-8FO" secondAttribute="leading" constant="-2" id="2TM-O1-3Tu"/>
+                    <constraint firstItem="P1g-ro-eqe" firstAttribute="top" secondItem="z1s-o9-owC" secondAttribute="bottom" constant="8" id="2eA-LX-eAo"/>
                     <constraint firstItem="sfW-Zi-XQN" firstAttribute="top" secondItem="SHH-Jm-7L2" secondAttribute="bottom" constant="10" symbolic="YES" id="3pM-b1-583"/>
                     <constraint firstItem="sfW-Zi-XQN" firstAttribute="baseline" secondItem="PeZ-ml-ZCO" secondAttribute="baseline" id="4NE-KQ-74n"/>
                     <constraint firstItem="cMQ-fa-E0R" firstAttribute="leading" secondItem="611" secondAttribute="trailing" constant="8" symbolic="YES" id="BTx-bh-OcW"/>
@@ -912,6 +921,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                     <constraint firstItem="611" firstAttribute="trailing" secondItem="j4w-jZ-fBW" secondAttribute="trailing" id="Yp6-cj-qqG"/>
                     <constraint firstItem="SHH-Jm-7L2" firstAttribute="width" secondItem="z1s-o9-owC" secondAttribute="width" id="Zbc-eN-vc3"/>
                     <constraint firstAttribute="trailing" secondItem="536" secondAttribute="trailing" constant="20" id="cA4-KA-7WE"/>
+                    <constraint firstAttribute="trailing" secondItem="P1g-ro-eqe" secondAttribute="trailing" constant="20" id="cWJ-xx-keF"/>
                     <constraint firstItem="611" firstAttribute="top" secondItem="j4w-jZ-fBW" secondAttribute="bottom" constant="13" id="f9q-R0-FHg"/>
                     <constraint firstItem="cMQ-fa-E0R" firstAttribute="leading" secondItem="SHH-Jm-7L2" secondAttribute="leading" id="gMy-i3-XP0"/>
                     <constraint firstItem="cMQ-fa-E0R" firstAttribute="bottom" secondItem="611" secondAttribute="bottom" id="hGF-dI-uAp"/>
@@ -923,6 +933,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                     <constraint firstItem="D5a-5h-bfi" firstAttribute="leading" secondItem="Xvc-jp-ubL" secondAttribute="leading" id="vbg-iF-yq5"/>
                     <constraint firstItem="639" firstAttribute="leading" secondItem="cMQ-fa-E0R" secondAttribute="trailing" constant="8" id="wRC-Yu-z7H"/>
                     <constraint firstItem="sBV-PK-MQL" firstAttribute="centerY" secondItem="z1s-o9-owC" secondAttribute="centerY" id="wou-j0-cyk"/>
+                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="P1g-ro-eqe" secondAttribute="bottom" constant="20" id="xkV-yp-MTQ"/>
                     <constraint firstItem="sfW-Zi-XQN" firstAttribute="leading" secondItem="PeZ-ml-ZCO" secondAttribute="trailing" constant="8" symbolic="YES" id="xxD-0f-CB8"/>
                 </constraints>
             </view>

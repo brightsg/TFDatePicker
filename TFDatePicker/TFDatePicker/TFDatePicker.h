@@ -12,4 +12,12 @@
 @interface TFDatePicker : NSDatePicker <NSDatePickerCellDelegate, NSPopoverDelegate>
 @property (nonatomic,readonly) BOOL empty;
 @property (assign) BOOL allowEmptyDate;
+@property SEL dateNormalisationSelector;
+
++ (void)setDefaultTimeZone:(NSTimeZone *)defaultTimeZone;
++ (NSTimeZone *)defaultTimeZone;
+
++ (void)setDefaultDateNormalisationSelector:(SEL)dateNormalisationSelector;
++ (SEL)defaultDateNormalisationSelector;
+
 @end

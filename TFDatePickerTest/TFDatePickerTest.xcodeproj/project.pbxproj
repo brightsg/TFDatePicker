@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AB81C3B8192519D700CA7A3B /* NSDate+DatePickerTest.m in Sources */ = {isa = PBXBuildFile; fileRef = AB81C3B7192519D700CA7A3B /* NSDate+DatePickerTest.m */; };
 		E28C8E851608F2D400FC3308 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E28C8E841608F2D400FC3308 /* Cocoa.framework */; };
 		E28C8E8F1608F2D500FC3308 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = E28C8E8D1608F2D500FC3308 /* InfoPlist.strings */; };
 		E28C8E911608F2D500FC3308 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E28C8E901608F2D500FC3308 /* main.m */; };
@@ -17,6 +18,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		AB81C3B6192519D700CA7A3B /* NSDate+DatePickerTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+DatePickerTest.h"; sourceTree = "<group>"; };
+		AB81C3B7192519D700CA7A3B /* NSDate+DatePickerTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+DatePickerTest.m"; sourceTree = "<group>"; };
 		E28C8E801608F2D400FC3308 /* TFDatePickerTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TFDatePickerTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E28C8E841608F2D400FC3308 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		E28C8E871608F2D400FC3308 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -90,6 +93,8 @@
 				E28C8E971608F2D500FC3308 /* AppDelegate.m */,
 				E28C8E991608F2D500FC3308 /* MainMenu.xib */,
 				E28C8E8B1608F2D500FC3308 /* Supporting Files */,
+				AB81C3B6192519D700CA7A3B /* NSDate+DatePickerTest.h */,
+				AB81C3B7192519D700CA7A3B /* NSDate+DatePickerTest.m */,
 			);
 			path = DatePickerTest;
 			sourceTree = "<group>";
@@ -170,6 +175,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AB81C3B8192519D700CA7A3B /* NSDate+DatePickerTest.m in Sources */,
 				E28C8E911608F2D500FC3308 /* main.m in Sources */,
 				E28C8E981608F2D500FC3308 /* AppDelegate.m in Sources */,
 			);

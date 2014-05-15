@@ -14,7 +14,7 @@ NSInteger buttonPadding = 3;
 NSInteger buttonSize = 16;
 
 @interface TFDatePicker ()
-@property (strong) NSLayoutConstraint *widthConstraint;
+
 @property (strong) TFDatePickerPopoverController *datePickerViewController;
 @property (nonatomic) BOOL empty;
 @property (strong) NSColor *prevTextColor;
@@ -24,14 +24,66 @@ NSInteger buttonSize = 16;
 
 @implementation TFDatePicker
 
-@synthesize widthConstraint = _widthConstraint;
-@synthesize datePickerViewController = _datePickerViewController;
+static NSTimeZone *m_defaultTimeZone;
+
+#pragma mark -
+#pragma mark Localization
+
++ (void)setDefaultTimeZone:(NSTimeZone *)defaultTimeZone
+{
+    m_defaultTimeZone = defaultTimeZone;
+    
+}
+
++ (NSTimeZone *)defaultTimeZone
+{
+    return m_defaultTimeZone;
+}
+
+#pragma mark -
+#pragma mark Normalization
+
+static SEL m_defaultDateNormalisationSelector;
+
++ (void)setDefaultDateNormalisationSelector:(SEL)dateNormalisationSelector
+{
+    m_defaultDateNormalisationSelector = dateNormalisationSelector;
+}
+
++ (SEL)defaultDateNormalisationSelector
+{
+    return m_defaultDateNormalisationSelector;
+}
+
+- (NSDate *)normalizeDate:(NSDate *)date
+{
+    if (self.dateNormalisationSelector && date) {
+        
+        // this leaks : date = [date performSelector:self.dateNormalisationSelector];
+        // hence the invocation
+        
+        SEL selector = self.dateNormalisationSelector;
+        NSMethodSignature *methodSig = [[date class] instanceMethodSignatureForSelector:selector];
+        NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:methodSig];
+        [invocation setSelector:selector];
+        [invocation setTarget:date];
+        [invocation invoke];
+        [invocation getReturnValue:&date];
+    }
+    
+    return date;
+}
+#pragma mark -
+#pragma mark Initialization
 
 + (void)initialize
 {
     // this is ignored when unarchiving from a nib
     [self setCellClass:[TFDatePickerCell class]];
 }
+
+#pragma mark -
+#pragma mark Nib loading
 
 - (void)awakeFromNib
 {
@@ -67,6 +119,17 @@ NSInteger buttonSize = 16;
         [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[showPopoverButton(16)]-(4)-|" options:0 metrics:nil views:views]];
         [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(-2)-[showPopoverButton(16)]" options:0 metrics:nil views:views]];
     }
+    
+    // override timezone with default
+    if ([[self class] defaultTimeZone]) {
+        self.timeZone = [[self class] defaultTimeZone];
+    }
+    
+    // override date normalization selector
+    if ([[self class] defaultDateNormalisationSelector]) {
+        self.dateNormalisationSelector  = [[self class] defaultDateNormalisationSelector];
+    }
+
 }
 
 #pragma mark -
@@ -105,8 +168,13 @@ NSInteger buttonSize = 16;
             [self updateControlValue:[self referenceDate]];
         }
         
+        // configure the popover date picker
 		self.datePickerViewController.datePicker.dateValue = self.dateValue;
+        self.datePickerViewController.datePicker.calendar = self.calendar;
+        self.datePickerViewController.datePicker.timeZone = self.timeZone;
+        self.datePickerViewController.datePicker.locale = self.locale;
 		[self.datePickerViewController.datePicker setDatePickerElements:self.datePickerElements];
+        
 		self.datePickerViewController.delegate = self;
         self.datePickerViewController.allowEmptyDate = self.allowEmptyDate;
         
@@ -136,20 +204,22 @@ NSInteger buttonSize = 16;
     [self invalidateIntrinsicContentSize];
 }
 
-- (void)setDateValue:(NSDate *)newStartDate
+- (void)setDateValue:(NSDate *)dateValue
 {
     if (self.allowEmptyDate) {
-        self.empty = !newStartDate || (id)newStartDate == [NSNull null] ? YES : NO;
+        self.empty = !dateValue || (id)dateValue == [NSNull null] ? YES : NO;
     } else {
         self.empty = NO;
     }
     
     if (self.empty) {
-        newStartDate = [NSDate distantFuture];
+        dateValue = [NSDate distantFuture];
         [self setNeedsDisplay];
     }
     
-    [super setDateValue:newStartDate];
+    dateValue = [self normalizeDate:dateValue];
+    
+    [super setDateValue:dateValue];
 }
 
 - (NSDate *)dateValue
@@ -194,6 +264,9 @@ NSInteger buttonSize = 16;
     // if we have bindings, update the bound "value", otherwise just update the value in the datePicker
     NSDictionary *bindingInfo = [self infoForBinding:@"value"];
     if (bindingInfo) {
+        
+        date = [self normalizeDate:date];
+        
         NSString *keyPath = [bindingInfo valueForKey:NSObservedKeyPathKey];
         [[bindingInfo objectForKey:NSObservedObjectKey] setValue:date forKeyPath:keyPath];
         

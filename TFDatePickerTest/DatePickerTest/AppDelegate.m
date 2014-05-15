@@ -8,6 +8,7 @@
 
 #import "AppDelegate.h"
 #import <TFDatePicker/TFDatePicker.h>
+#import "NSDate+DatePickerTest.h"
 
 @interface AppDelegate ()
 @property (weak) IBOutlet TFDatePicker *datePicker1;
@@ -22,6 +23,17 @@
 @synthesize datePicker2 = _datePicker2;
 @synthesize date1 = _date1;
 @synthesize date2 = _date2;
+
++ (void)initialize
+{
+    // default localization and date normalisation
+    
+    // always use UTC
+    [TFDatePicker setDefaultTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"UTC"]];
+    
+    // normalise dates to midnight UTC
+    [TFDatePicker setDefaultDateNormalisationSelector:@selector(dpt_normalise)];
+}
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
@@ -38,7 +50,6 @@
 
     self.allDay = YES;
 }
-
 
 - (void)setAllDay:(BOOL)allDay {
 	_allDay = allDay;
