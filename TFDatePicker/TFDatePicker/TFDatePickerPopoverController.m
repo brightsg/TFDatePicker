@@ -58,21 +58,6 @@
     [self.delegate popoverDidClose:notification];
 }
 
-- (NSDate *)parseDateString:(NSString *)input
-{
-    NSDate *date = nil;
-    
-    if (!input || [input length] == 0) return date;
-    
-    NSError *error;
-    NSDataDetector *guess = [NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeDate error:&error];
-    NSArray *matches = [guess matchesInString:input options:0 range:NSMakeRange(0, [input length])];
-    
-    if ([matches count]) {
-        date = ((NSTextCheckingResult *)[matches objectAtIndex:0]).date;
-    }
-    return date;
-}
 
 #pragma mark -
 #pragma mark Actions
@@ -92,5 +77,32 @@
     _completionHandler(nil);
     [self.popover performClose:sender];
 }
+
+#pragma mark -
+#pragma mark Todo
+
+#ifdef IS_THE_FUTURE
+
+/*
+ 
+ Add an NSTextField to the nib and parse the date from user input
+ 
+ */
+- (NSDate *)parseDateString:(NSString *)input
+{
+    NSDate *date = nil;
+    
+    if (!input || [input length] == 0) return date;
+    
+    NSError *error;
+    NSDataDetector *guess = [NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeDate error:&error];
+    NSArray *matches = [guess matchesInString:input options:0 range:NSMakeRange(0, [input length])];
+    
+    if ([matches count]) {
+        date = ((NSTextCheckingResult *)[matches objectAtIndex:0]).date;
+    }
+    return date;
+}
+#endif
 
 @end

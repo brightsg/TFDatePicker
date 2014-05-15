@@ -35,27 +35,12 @@ NSInteger buttonSize = 16;
 
 - (void)awakeFromNib
 {
-    // cell class exception
+    // cell class warning
     if (![self.cell isKindOfClass:[TFDatePickerCell class]]) {
-        [NSException raise:@"TFDatePicker invalid cell" format:@"%@ requires cell of class %@ to be set in the nib in order to function correctly",
-         [self className], [[[self class] cellClass] className]];
+        NSLog(@"%@ requires cell of class %@ to be set in the nib in order to function correctly", [self className], [[[self class] cellClass] className]);
     }
     
-    // look for any existing fixed width constraints.
-    BOOL hasWidthConstraint = NO;
-    
-    for (NSLayoutConstraint *constraint in self.constraints) {
-        if (constraint.firstAttribute == NSLayoutAttributeWidth) {
-            hasWidthConstraint = YES;
-            break;
-        }
-    }
-
-    // if no width attribute then add one so that control can accomodate button
-    if (!hasWidthConstraint) {
-        [self updateWidthConstraint];
-    }
-    
+    // button
 	NSButton *showPopoverButton = [[NSButton alloc] initWithFrame:NSZeroRect];
 	showPopoverButton.buttonType = NSMomentaryChangeButton;
 	showPopoverButton.bezelStyle = NSInlineBezelStyle;
@@ -71,6 +56,7 @@ NSInteger buttonSize = 16;
 	showPopoverButton.action = @selector(performClick:);
 	[self addSubview:showPopoverButton];
 
+    // button constraints
     // TODO: this only works when unarchiving. Refactor so that these constraints get added and removed when datePickerStyle is set.
 	NSDictionary *views = NSDictionaryOfVariableBindings(showPopoverButton);
     if ([self.cell datePickerStyle] == NSTextFieldAndStepperDatePickerStyle) {
@@ -83,35 +69,18 @@ NSInteger buttonSize = 16;
     }
 }
 
-- (void)setDatePickerElements:(NSDatePickerElementFlags)elementFlags {
-    
-    [super setDatePickerElements:elementFlags];
+#pragma mark -
+#pragma mark Auto layout
 
-	if (self.widthConstraint) {
-        [self updateWidthConstraint];
-    }
-}
-
-- (void)updateWidthConstraint
+- (NSSize)intrinsicContentSize
 {
-    if (self.widthConstraint) {
-		[self removeConstraint:self.widthConstraint];
-    }
+    NSSize size = [super intrinsicContentSize];
     
-    [self sizeToFit];
-    self.widthConstraint = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0f constant:self.frame.size.width];
-    self.widthConstraint.priority = NSLayoutPriorityDefaultHigh;
-    [self addConstraint:_widthConstraint];
-
+   return NSMakeSize(size.width + 22.0f, size.height);
 }
 
-- (void)sizeToFit {
-	[super sizeToFit];
-	CGRect frame = self.frame;
-	frame.size.width += 22.0f;
-	self.frame = frame;
-}
-
+#pragma mark -
+#pragma mark NSDatePickerCellDelegate
 
 - (void)datePickerCell:(NSDatePickerCell *)aDatePickerCell validateProposedDateValue:(NSDate **)proposedDateValue timeInterval:(NSTimeInterval *)proposedTimeInterval {
 	if (self.delegate) {
@@ -160,6 +129,12 @@ NSInteger buttonSize = 16;
 
 #pragma mark -
 #pragma mark Accessors
+
+- (void)setDatePickerElements:(NSDatePickerElementFlags)elementFlags
+{
+    [super setDatePickerElements:elementFlags];
+    [self invalidateIntrinsicContentSize];
+}
 
 - (void)setDateValue:(NSDate *)newStartDate
 {
@@ -240,6 +215,7 @@ NSInteger buttonSize = 16;
 
 - (void)mouseDown:(NSEvent *)theEvent
 {
+    // TODO: add a context menu to allow clearing of current date
     if (self.empty) {
         [self updateControlValue:[self referenceDate]];
     }
