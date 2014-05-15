@@ -7,10 +7,12 @@
 //
 
 #import "AppDelegate.h"
+#import <TFDatePicker/TFDatePicker.h>
 
 @interface AppDelegate ()
-@property (weak) IBOutlet NSDatePicker *datePicker1;
-@property (weak) IBOutlet NSDatePicker *datePicker2;
+@property (weak) IBOutlet TFDatePicker *datePicker1;
+@property (weak) IBOutlet TFDatePicker *datePicker2;
+@property (weak) IBOutlet TFDatePicker *datePicker3;
 @end
 
 @implementation AppDelegate
@@ -24,24 +26,30 @@
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
 	// Insert code here to initialize your application
-//	_datePicker1.dateValue = [NSDate date];
-	_datePicker1.delegate = self;
-//	_datePicker2.dateValue = [NSDate date];
-	_datePicker2.delegate = self;
+	self.datePicker1.delegate = self;
+	self.datePicker2.delegate = self;
 
-	self.date1 = [NSDate date];
+    // allow empty dates and nil binding
+    self.datePicker1.allowEmptyDate = YES;
+    self.datePicker2.allowEmptyDate = YES;
+    
+	self.date1 = [NSDate dateWithTimeIntervalSinceReferenceDate:0];
 	self.date2 = [NSDate date];
-	self.allDay = YES;
+
+    self.allDay = YES;
 }
+
 
 - (void)setAllDay:(BOOL)allDay {
 	_allDay = allDay;
 	if (!allDay) {
-		_datePicker1.datePickerElements = NSYearMonthDayDatePickerElementFlag | NSHourMinuteDatePickerElementFlag;
-		_datePicker2.datePickerElements = NSYearMonthDayDatePickerElementFlag | NSHourMinuteDatePickerElementFlag;
+		self.datePicker1.datePickerElements = NSYearMonthDayDatePickerElementFlag | NSHourMinuteDatePickerElementFlag;
+		self.datePicker2.datePickerElements = NSYearMonthDayDatePickerElementFlag | NSHourMinuteDatePickerElementFlag;
+		self.datePicker3.datePickerElements = NSYearMonthDayDatePickerElementFlag | NSHourMinuteDatePickerElementFlag;
 	} else {
-		_datePicker1.datePickerElements = NSYearMonthDayDatePickerElementFlag;
-		_datePicker2.datePickerElements = NSYearMonthDayDatePickerElementFlag;
+		self.datePicker1.datePickerElements = NSYearMonthDayDatePickerElementFlag;
+		self.datePicker2.datePickerElements = NSYearMonthDayDatePickerElementFlag;
+		self.datePicker3.datePickerElements = NSYearMonthDayDatePickerElementFlag;
 	}
 }
 
@@ -49,7 +57,7 @@ const NSTimeInterval timeStep = 5.0f * 60.0f; // 5 mins
 
 - (void)datePickerCell:(NSDatePickerCell *)aDatePickerCell validateProposedDateValue:(NSDate **)proposedDateValue timeInterval:(NSTimeInterval *)proposedTimeInterval {
 	NSDate *date = *proposedDateValue;
-//	*proposedTimeInterval = (double)(((NSUInteger)*proposedTimeInterval) % 15);
+
 	NSTimeInterval timeInterval = [date timeIntervalSinceReferenceDate] - (timeStep/2.0);
 
 	if(timeStep != 0) {
@@ -62,10 +70,5 @@ const NSTimeInterval timeStep = 5.0f * 60.0f; // 5 mins
 	*proposedDateValue = [NSDate dateWithTimeIntervalSinceReferenceDate:timeInterval];
 }
 
-- (void)setDate1:(NSDate *)date1 {
-	[self willChangeValueForKey:@"date1"];
-	_date1 = date1;
-	[self didChangeValueForKey:@"date1"];
-}
 
 @end

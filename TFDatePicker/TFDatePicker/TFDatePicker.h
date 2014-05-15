@@ -9,6 +9,7 @@
 #import <Cocoa/Cocoa.h>
 
 
-@interface TFDatePicker : NSDatePicker <NSDatePickerCellDelegate>
-
+@interface TFDatePicker : NSDatePicker <NSDatePickerCellDelegate, NSPopoverDelegate>
+@property (nonatomic,readonly) BOOL empty;
+@property (assign) BOOL allowEmptyDate;
 @end

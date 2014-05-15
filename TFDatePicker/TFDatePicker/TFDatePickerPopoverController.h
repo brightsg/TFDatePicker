@@ -10,7 +10,10 @@
 
 @interface TFDatePickerPopoverController : NSViewController <NSPopoverDelegate>;
 
-@property (readonly, strong) IBOutlet NSDatePicker *datePicker;
+@property (strong, readonly) NSDatePicker *datePicker;
+@property (strong, readonly) NSPopover *popover;
+@property (weak) id <NSPopoverDelegate> delegate;
+@property (assign) BOOL allowEmptyDate;
 
 - (IBAction)showDatePickerRelativeToRect:(NSRect)rect inView:(NSView *)view completionHander:(void(^)(NSDate *selectedDate))completionHandler;
 
