@@ -295,10 +295,34 @@ static SEL m_defaultDateNormalisationSelector;
     NSDictionary *bindingInfo = [self infoForBinding:NSValueBinding];
     if (bindingInfo) {
         
+        // normalise the date
         date = [self normalizeDate:date];
         
+        // transform the binding value if a transformer is defined
+        id bindingValue = date;
+        NSDictionary *options = [bindingInfo valueForKey:NSOptionsKey];
+        NSValueTransformer *valueTransformer = nil;
+        
+        // use named transformer
+       id transformerNameOption = options[NSValueTransformerNameBindingOption];
+        if (transformerNameOption && ![transformerNameOption isEqual:[NSNull null]]) {
+            valueTransformer = [NSValueTransformer valueTransformerForName:transformerNameOption];
+        }
+        
+        // use transformer instance
+        id transformerOption = options[NSValueTransformerBindingOption];
+        if (transformerOption && ![transformerOption isEqual:[NSNull null]]) {
+            valueTransformer = transformerOption;
+        }
+        
+        // apply transformer
+        if (valueTransformer) {
+            bindingValue = [valueTransformer reverseTransformedValue:bindingValue];
+        }
+        
+        // update the bound object
         NSString *keyPath = [bindingInfo valueForKey:NSObservedKeyPathKey];
-        [[bindingInfo objectForKey:NSObservedObjectKey] setValue:date forKeyPath:keyPath];
+        [[bindingInfo objectForKey:NSObservedObjectKey] setValue:bindingValue forKeyPath:keyPath];
         
     } else {
         self.dateValue = date;
