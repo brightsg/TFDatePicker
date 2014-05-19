@@ -10,14 +10,17 @@
 #import "TFDatePickerCell.h"
 #import "TFDatePickerPopoverController.h"
 
-NSInteger buttonPadding = 3;
-NSInteger buttonSize = 16;
+static char TFValueBindingContext;
 
 @interface TFDatePicker ()
 
 @property (strong) TFDatePickerPopoverController *datePickerViewController;
 @property (nonatomic) BOOL empty;
 @property (strong) NSColor *prevTextColor;
+@property (assign) BOOL warningIssued;
+
+@property (strong) id valueBindingObservedObject;
+@property (strong) NSString *valueBindingObservedKeyPath;
 
 - (void)performClick:(id)sender;
 @end
@@ -59,7 +62,7 @@ static SEL m_defaultDateNormalisationSelector;
 {
     if (self.dateNormalisationSelector && date) {
         
-        // this leaks : date = [date performSelector:self.dateNormalisationSelector];
+        // potential warning leak warning leak : date = [date performSelector:self.dateNormalisationSelector];
         // hence the invocation
         
         SEL selector = self.dateNormalisationSelector;
@@ -86,19 +89,15 @@ static SEL m_defaultDateNormalisationSelector;
 #pragma mark Nib loading
 
 - (void)awakeFromNib
-{
-    // cell class warning
-    if (![self.cell isKindOfClass:[TFDatePickerCell class]]) {
-        NSLog(@"%@ requires cell of class %@ to be set in the nib in order to function correctly", [self className], [[[self class] cellClass] className]);
-    }
-    
+{    
     // button
 	NSButton *showPopoverButton = [[NSButton alloc] initWithFrame:NSZeroRect];
 	showPopoverButton.buttonType = NSMomentaryChangeButton;
 	showPopoverButton.bezelStyle = NSInlineBezelStyle;
 	showPopoverButton.bordered = NO;
 	showPopoverButton.imagePosition = NSImageOnly;
-
+    showPopoverButton.toolTip = NSLocalizedString(@"Show date picker panel", "Datepicker button tool tip");
+    
 	NSBundle *frameworkBundle = [NSBundle bundleForClass:[self class]];
 	showPopoverButton.image = [frameworkBundle imageForResource:@"calendar"];
 	[showPopoverButton.cell setHighlightsBy:NSContentsCellMask];
@@ -242,11 +241,24 @@ static SEL m_defaultDateNormalisationSelector;
     // there is no effective way of overridding the cell interior drawing (believe me, I really really tried)
     // hence we camouflage the text.
     if (empty) {
-        self.prevTextColor = self.textColor;
-        self.textColor = self.backgroundColor;
+        
+        // cell class warning
+        if (![self.cell isKindOfClass:[TFDatePickerCell class]] && !self.warningIssued) {
+            self.warningIssued = YES;
+            NSLog(@"%@ requires cell of class %@ to be set in the nib in order to function correctly. This warning will be issued for each instance of the control that assigns the empty property to YES", [self className], [[[self class] cellClass] className]);
+        }
+
+        // match text to background
+        if (!self.prevTextColor) {
+            self.prevTextColor = self.textColor;
+            [super setTextColor:self.backgroundColor];
+        }
     } else {
+        
+        // reset text color
         if (self.prevTextColor) {
-            self.textColor = self.prevTextColor;
+            [super setTextColor:self.prevTextColor];
+            self.prevTextColor = nil;
         }
     }
 }
@@ -256,13 +268,31 @@ static SEL m_defaultDateNormalisationSelector;
     return [NSDate dateWithTimeIntervalSinceReferenceDate:0];
 }
 
+- (void)setTextColor:(NSColor *)color
+{
+    if (self.empty && self.prevTextColor) {
+        self.prevTextColor = color;
+    } else {
+        [super setTextColor:color];
+    }
+}
+
+- (void)setBackgroundColor:(NSColor *)color
+{
+    if (self.empty) {
+        [super setTextColor:color];
+    }
+    
+    [super setBackgroundColor:color];
+}
+
 #pragma mark -
 #pragma mark Binding support
 
 - (void)updateControlValue:(NSDate *)date
 {
     // if we have bindings, update the bound "value", otherwise just update the value in the datePicker
-    NSDictionary *bindingInfo = [self infoForBinding:@"value"];
+    NSDictionary *bindingInfo = [self infoForBinding:NSValueBinding];
     if (bindingInfo) {
         
         date = [self normalizeDate:date];
@@ -272,6 +302,75 @@ static SEL m_defaultDateNormalisationSelector;
         
     } else {
         self.dateValue = date;
+    }
+}
+
+- (void)bind:(NSString *)binding toObject:(id)observable withKeyPath:(NSString *)keyPath options:(NSDictionary *)options
+{
+    if ([binding isEqual:NSValueBinding]) {
+        [self removeValueBindingObservation];
+    }
+
+    [super bind:binding toObject:observable withKeyPath:keyPath options:options];
+    
+    // observe when the value binding changes
+    if ([binding isEqual:NSValueBinding]) {
+        [self addValueBindingObservationForObject:observable keyPath:keyPath];
+    }
+}
+
+- (void)unbind:(NSString *)binding
+{
+    if ([binding isEqual:NSValueBinding]) {
+        [self removeValueBindingObservation];
+    }
+    
+    [super unbind:binding];
+}
+
+- (void)addValueBindingObservationForObject:(id)object keyPath:(NSString *)keyPath
+{
+    self.valueBindingObservedObject = object;
+    self.valueBindingObservedKeyPath = keyPath;
+    
+    [self.valueBindingObservedObject addObserver:self
+                                      forKeyPath:self.valueBindingObservedKeyPath
+                                         options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial
+                                         context:&TFValueBindingContext];
+}
+
+- (void)removeValueBindingObservation
+{
+    if (self.valueBindingObservedObject) {
+        
+        @try {
+            [self.valueBindingObservedObject removeObserver:self forKeyPath:self.valueBindingObservedKeyPath];
+        } @catch (NSException *e) {
+            
+        }
+        
+        self.valueBindingObservedObject = nil;
+        self.valueBindingObservedKeyPath = nil;
+    }
+}
+
+#pragma mark -
+#pragma mark KVO
+
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    if (context == &TFValueBindingContext) {
+        NSDate *date = [object valueForKeyPath:keyPath];
+        
+        if (!date && self.allowEmptyDate) {
+            self.empty = YES;
+        } else {
+            self.empty = NO;
+        }
+        
+    } else {
+        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
     }
 }
 
@@ -293,6 +392,14 @@ static SEL m_defaultDateNormalisationSelector;
         [self updateControlValue:[self referenceDate]];
     }
     [super mouseDown:theEvent];
+}
+
+#pragma mark -
+#pragma mark KVO
+
+- (void)dealloc
+{
+    [self removeValueBindingObservation];
 }
 
 @end

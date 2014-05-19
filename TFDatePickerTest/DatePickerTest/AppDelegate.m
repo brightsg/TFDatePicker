@@ -14,15 +14,19 @@
 @property (weak) IBOutlet TFDatePicker *datePicker1;
 @property (weak) IBOutlet TFDatePicker *datePicker2;
 @property (weak) IBOutlet TFDatePicker *datePicker3;
+@property (weak) IBOutlet TFDatePicker *datePicker4;
+
+@property (assign) IBOutlet NSWindow *window;
+
+@property (strong) NSDate *date1;
+@property (strong) NSDate *date2;
+@property (strong) NSDate *date3;
+@property (strong) NSDate *date4;
+@property (nonatomic, assign) BOOL allDay;
+
 @end
 
 @implementation AppDelegate
-
-@synthesize allDay = _allDay;
-@synthesize datePicker1 = _datePicker1;
-@synthesize datePicker2 = _datePicker2;
-@synthesize date1 = _date1;
-@synthesize date2 = _date2;
 
 + (void)initialize
 {
@@ -41,13 +45,17 @@
 	self.datePicker1.delegate = self;
 	self.datePicker2.delegate = self;
 
-    // allow empty dates and nil binding
+    // allow empty dates and nil binding.
+    // if this property is not set then the date picker behaves like its superclass.
     self.datePicker1.allowEmptyDate = YES;
     self.datePicker2.allowEmptyDate = YES;
+    self.datePicker4.allowEmptyDate = YES;
     
-	self.date1 = [NSDate dateWithTimeIntervalSinceReferenceDate:0];
+	self.date1 = nil;
 	self.date2 = [NSDate date];
-
+    self.date3 = [NSDate dateWithTimeIntervalSinceReferenceDate:0];
+    self.date4 = nil;
+    
     self.allDay = YES;
 }
 
@@ -57,10 +65,12 @@
 		self.datePicker1.datePickerElements = NSYearMonthDayDatePickerElementFlag | NSHourMinuteDatePickerElementFlag;
 		self.datePicker2.datePickerElements = NSYearMonthDayDatePickerElementFlag | NSHourMinuteDatePickerElementFlag;
 		self.datePicker3.datePickerElements = NSYearMonthDayDatePickerElementFlag | NSHourMinuteDatePickerElementFlag;
+        self.datePicker4.datePickerElements = NSYearMonthDayDatePickerElementFlag | NSHourMinuteDatePickerElementFlag;
 	} else {
 		self.datePicker1.datePickerElements = NSYearMonthDayDatePickerElementFlag;
 		self.datePicker2.datePickerElements = NSYearMonthDayDatePickerElementFlag;
 		self.datePicker3.datePickerElements = NSYearMonthDayDatePickerElementFlag;
+        self.datePicker4.datePickerElements = NSYearMonthDayDatePickerElementFlag;
 	}
 }
 
