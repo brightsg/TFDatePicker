@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AB346E22192F5F51006E2AD6 /* prompt.png in Resources */ = {isa = PBXBuildFile; fileRef = AB346E21192F5F51006E2AD6 /* prompt.png */; };
 		AB81C3AE1923961D00CA7A3B /* TFDatePickerCell.h in Headers */ = {isa = PBXBuildFile; fileRef = AB81C3AC1923961D00CA7A3B /* TFDatePickerCell.h */; };
 		AB81C3AF1923961D00CA7A3B /* TFDatePickerCell.m in Sources */ = {isa = PBXBuildFile; fileRef = AB81C3AD1923961D00CA7A3B /* TFDatePickerCell.m */; };
 		AB81C3B11923AF4600CA7A3B /* TFDatePicker.xib in Resources */ = {isa = PBXBuildFile; fileRef = AB81C3B01923AF4600CA7A3B /* TFDatePicker.xib */; };
@@ -21,6 +22,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		AB346E21192F5F51006E2AD6 /* prompt.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = prompt.png; sourceTree = "<group>"; };
 		AB81C3AC1923961D00CA7A3B /* TFDatePickerCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFDatePickerCell.h; sourceTree = "<group>"; };
 		AB81C3AD1923961D00CA7A3B /* TFDatePickerCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFDatePickerCell.m; sourceTree = "<group>"; };
 		AB81C3B01923AF4600CA7A3B /* TFDatePicker.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TFDatePicker.xib; sourceTree = "<group>"; };
@@ -106,6 +108,7 @@
 		E2D656F0160A18F100DEC117 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				AB346E21192F5F51006E2AD6 /* prompt.png */,
 				E2D656F1160A18F100DEC117 /* TFDatePicker-Info.plist */,
 				E2D656F2160A18F100DEC117 /* InfoPlist.strings */,
 				E2D656F5160A18F100DEC117 /* TFDatePicker-Prefix.pch */,
@@ -183,6 +186,7 @@
 			files = (
 				E2D656F4160A18F100DEC117 /* InfoPlist.strings in Resources */,
 				E2D65700160A18FE00DEC117 /* calendar.png in Resources */,
+				AB346E22192F5F51006E2AD6 /* prompt.png in Resources */,
 				E2D65701160A18FE00DEC117 /* calendar@2x.png in Resources */,
 				AB81C3B11923AF4600CA7A3B /* TFDatePicker.xib in Resources */,
 			);

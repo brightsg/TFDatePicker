@@ -10,8 +10,9 @@
 
 
 @interface TFDatePicker : NSDatePicker <NSDatePickerCellDelegate, NSPopoverDelegate>
-@property (nonatomic,readonly) BOOL empty;
+@property (nonatomic, readonly) BOOL empty;
 @property (nonatomic, assign) BOOL allowEmptyDate;
+@property (nonatomic, assign) BOOL showPromptWhenEmpty;
 @property SEL dateNormalisationSelector;
 
 + (void)setDefaultTimeZone:(NSTimeZone *)defaultTimeZone;

@@ -21,6 +21,10 @@ static char TFValueBindingContext;
 
 @property (strong) id valueBindingObservedObject;
 @property (strong) NSString *valueBindingObservedKeyPath;
+@property (strong) NSImage *promptImage;
+@property CGFloat imageOffsetX;
+@property CGFloat imageOffsetY;
+@property CGFloat imageOpacity;
 
 - (void)performClick:(id)sender;
 @end
@@ -87,9 +91,13 @@ static SEL m_defaultDateNormalisationSelector;
 
 #pragma mark -
 #pragma mark Nib loading
-
+ 
 - (void)awakeFromNib
-{    
+{
+    // access framework bundle
+	NSBundle *frameworkBundle = [NSBundle bundleForClass:[self class]];
+    self.promptImage = [frameworkBundle imageForResource:@"prompt"];
+    
     // button
 	NSButton *showPopoverButton = [[NSButton alloc] initWithFrame:NSZeroRect];
 	showPopoverButton.buttonType = NSMomentaryChangeButton;
@@ -98,7 +106,6 @@ static SEL m_defaultDateNormalisationSelector;
 	showPopoverButton.imagePosition = NSImageOnly;
     showPopoverButton.toolTip = NSLocalizedString(@"Show date picker panel", "Datepicker button tool tip");
     
-	NSBundle *frameworkBundle = [NSBundle bundleForClass:[self class]];
 	showPopoverButton.image = [frameworkBundle imageForResource:@"calendar"];
 	[showPopoverButton.cell setHighlightsBy:NSContentsCellMask];
 
@@ -107,14 +114,19 @@ static SEL m_defaultDateNormalisationSelector;
 	showPopoverButton.action = @selector(performClick:);
 	[self addSubview:showPopoverButton];
 
+    self.imageOffsetY = 3;
+    self.imageOpacity = 0.8;
+    
     // button constraints
     // TODO: this only works when unarchiving. Refactor so that these constraints get added and removed when datePickerStyle is set.
 	NSDictionary *views = NSDictionaryOfVariableBindings(showPopoverButton);
     if ([self.cell datePickerStyle] == NSTextFieldAndStepperDatePickerStyle) {
+        self.imageOffsetX = 5 + 16 + 20;
         [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[showPopoverButton(16)]-(20)-|" options:0 metrics:nil views:views]];
         [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(3)-[showPopoverButton(16)]" options:0 metrics:nil views:views]];
         
     } else {
+        self.imageOffsetX = 5 + 16 + 4;
         [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[showPopoverButton(16)]-(4)-|" options:0 metrics:nil views:views]];
         [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(-2)-[showPopoverButton(16)]" options:0 metrics:nil views:views]];
     }
@@ -139,6 +151,33 @@ static SEL m_defaultDateNormalisationSelector;
     NSSize size = [super intrinsicContentSize];
     
    return NSMakeSize(size.width + 22.0f, size.height);
+}
+
+#pragma mark -
+#pragma mark Drawing
+
+- (void)drawRect:(NSRect)rect
+{
+    // do default drawing
+    [super drawRect:rect];
+    
+    BOOL drawImage = NO;
+    NSImage *image = self.promptImage;
+    
+    if (self.empty && self.showPromptWhenEmpty) {
+        drawImage = YES;
+        image = self.promptImage;
+    }
+    
+    if (drawImage) {
+        [image setFlipped:NO];
+        
+        CGFloat imageHeight = image.size.height;
+        CGFloat imageWidth = image.size.width;
+        
+        NSRect rectForBorders = NSMakeRect(rect.size.width - imageWidth - self.imageOffsetX, self.imageOffsetY, imageWidth, imageHeight);
+        [image drawInRect:rectForBorders fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:self.imageOpacity];
+    }
 }
 
 #pragma mark -
@@ -284,6 +323,13 @@ static SEL m_defaultDateNormalisationSelector;
     }
     
     [super setBackgroundColor:color];
+}
+
+- (void)setShowPromptWhenEmpty:(BOOL)showPromptWhenEmpty
+{
+    _showPromptWhenEmpty = showPromptWhenEmpty;
+    
+    [self needsDisplay];
 }
 
 #pragma mark -
