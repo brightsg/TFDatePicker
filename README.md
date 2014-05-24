@@ -3,7 +3,7 @@ TFDatePicker
 
 Enhanced textual Cocoa NSDatePicker, which has a popover control to selecting date and time using the standard controls.
 
-![Alt text](./documents/TFDatePicker.png?raw=true )
+![TFDatePicker image](./Documents/TFDatePicker.png?raw=true )
 
 Features
 ============
