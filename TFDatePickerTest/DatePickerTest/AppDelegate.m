@@ -48,8 +48,13 @@
     // allow empty dates and nil binding.
     // if this property is not set then the date picker behaves like its superclass.
     self.datePicker1.allowEmptyDate = YES;
+    self.datePicker1.showPromptWhenEmpty = YES;
+    
     self.datePicker2.allowEmptyDate = YES;
+    self.datePicker2.showPromptWhenEmpty = YES;
+    
     self.datePicker4.allowEmptyDate = YES;
+    self.datePicker4.showPromptWhenEmpty = NO;  // just to be different
     
 	self.date1 = nil;
 	self.date2 = [NSDate date];
