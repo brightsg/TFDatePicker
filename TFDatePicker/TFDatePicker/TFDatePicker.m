@@ -31,10 +31,11 @@ static char TFValueBindingContext;
 
 @implementation TFDatePicker
 
-static NSTimeZone *m_defaultTimeZone;
 
 #pragma mark -
 #pragma mark Localization
+
+static NSTimeZone *m_defaultTimeZone;
 
 + (void)setDefaultTimeZone:(NSTimeZone *)defaultTimeZone
 {
@@ -44,6 +45,7 @@ static NSTimeZone *m_defaultTimeZone;
 
 + (NSTimeZone *)defaultTimeZone
 {
+    // defaults to nil
     return m_defaultTimeZone;
 }
 
@@ -59,6 +61,7 @@ static SEL m_defaultDateNormalisationSelector;
 
 + (SEL)defaultDateNormalisationSelector
 {
+    // defaults to nil
     return m_defaultDateNormalisationSelector;
 }
 
@@ -80,6 +83,26 @@ static SEL m_defaultDateNormalisationSelector;
     
     return date;
 }
+
+#pragma mark -
+#pragma mark Reference date
+
+static NSDate * m_referenceDate;
+
++ (void)setDefaultReferenceDate:(NSDate *)date
+{
+    m_referenceDate = date;
+    
+}
+
++ (NSDate *)defaultReferenceDate
+{
+    if (!m_referenceDate) {
+        m_referenceDate = [NSDate dateWithTimeIntervalSinceReferenceDate:0];
+    }
+    return m_referenceDate;
+}
+
 #pragma mark -
 #pragma mark Initialization
 
@@ -141,6 +164,8 @@ static SEL m_defaultDateNormalisationSelector;
         self.dateNormalisationSelector  = [[self class] defaultDateNormalisationSelector];
     }
 
+    // set reference date
+    self.referenceDate = [self.class defaultReferenceDate];
 }
 
 #pragma mark -
@@ -300,11 +325,6 @@ static SEL m_defaultDateNormalisationSelector;
             self.prevTextColor = nil;
         }
     }
-}
-
-- (NSDate *)referenceDate
-{
-    return [NSDate dateWithTimeIntervalSinceReferenceDate:0];
 }
 
 - (void)setTextColor:(NSColor *)color

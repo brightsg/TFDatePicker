@@ -37,6 +37,9 @@
     
     // normalise dates to midnight UTC
     [TFDatePicker setDefaultDateNormalisationSelector:@selector(dpt_normalise)];
+    
+    // default reference date to today
+    [TFDatePicker setDefaultReferenceDate:[NSDate date]];
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
@@ -55,6 +58,7 @@
     
     self.datePicker4.allowEmptyDate = YES;
     self.datePicker4.showPromptWhenEmpty = NO;  // just to be different
+    self.datePicker4.referenceDate = [NSDate dateWithTimeIntervalSinceReferenceDate:0]; // just to be different
     
 	self.date1 = nil;
 	self.date2 = [NSDate date];
