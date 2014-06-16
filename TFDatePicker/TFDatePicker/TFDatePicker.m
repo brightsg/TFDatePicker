@@ -243,7 +243,9 @@ static NSDate * m_referenceDate;
         
 		[_datePickerViewController showDatePickerRelativeToRect:[sender bounds] inView:sender completionHander:^(NSDate *selectedDate) {
             
-            [self updateControlValue:selectedDate];
+            if (_datePickerViewController.updateControlValueOnClose) {
+                [self updateControlValue:selectedDate];
+            }
             
 		}];
 	}
@@ -386,9 +388,30 @@ static NSDate * m_referenceDate;
             bindingValue = [valueTransformer reverseTransformedValue:bindingValue];
         }
         
-        // update the bound object
+        // get the observed object and the key path
+        id observedObject = [bindingInfo objectForKey:NSObservedObjectKey];
         NSString *keyPath = [bindingInfo valueForKey:NSObservedKeyPathKey];
-        [[bindingInfo objectForKey:NSObservedObjectKey] setValue:bindingValue forKeyPath:keyPath];
+        
+        // validate
+        NSError *error = nil;
+        BOOL isValid = [observedObject validateValue:&date forKeyPath:keyPath error:&error];
+        
+        // update the bound object
+        if (isValid) {
+            [observedObject setValue:bindingValue forKeyPath:keyPath];
+        } else {
+            
+            // close the popver
+            self.datePickerViewController.updateControlValueOnClose = NO;
+            [self.datePickerViewController.popover close];
+            
+            // show error alert
+            NSAlert *alert = [NSAlert alertWithError:error];
+            [alert beginSheetModalForWindow:[self window] completionHandler:^(NSModalResponse returnCode) {
+                if (returnCode == NSAlertFirstButtonReturn) {
+                }
+            }];
+        }
         
     } else {
         self.dateValue = date;

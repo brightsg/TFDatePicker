@@ -12,7 +12,7 @@
 @interface TFDatePickerPopoverController ()
 
 @property (strong) IBOutlet NSDatePicker *datePicker;
-@property (strong) NSPopover *popover;
+
 @property (copy) void(^completionHandler)(NSDate *selectedDate);
 @end
 
@@ -47,7 +47,7 @@
 	self.popover.contentViewController = self;
 	self.popover.behavior = NSPopoverBehaviorTransient;
 	[self.popover showRelativeToRect:rect ofView:view preferredEdge:NSMaxXEdge];
-
+    self.updateControlValueOnClose = YES;
 }
 
 #pragma mark -
