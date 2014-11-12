@@ -49,6 +49,20 @@ static NSTimeZone *m_defaultTimeZone;
     return m_defaultTimeZone;
 }
 
+static NSCalendar *m_defaultCalendar;
+
++ (void)setDefaultCalendar:(NSCalendar *)defaultCalendar
+{
+    m_defaultCalendar = defaultCalendar;
+    
+}
+
++ (NSCalendar *)defaultCalendar
+{
+    // defaults to nil
+    return m_defaultCalendar;
+}
+
 #pragma mark -
 #pragma mark Normalization
 
@@ -153,7 +167,12 @@ static NSDate * m_referenceDate;
         [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[showPopoverButton(16)]-(4)-|" options:0 metrics:nil views:views]];
         [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(-2)-[showPopoverButton(16)]" options:0 metrics:nil views:views]];
     }
-    
+
+    // override calendar with default
+    if ([[self class] defaultCalendar]) {
+        self.calendar = [[self class] defaultCalendar];
+    }
+
     // override timezone with default
     if ([[self class] defaultTimeZone]) {
         self.timeZone = [[self class] defaultTimeZone];

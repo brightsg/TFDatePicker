@@ -23,6 +23,16 @@
 
 /*!
  
+ Class default calendar accessors.
+ 
+ - calendar defaults to this value
+ 
+ */
++ (void)setDefaultCalendar:(NSCalendar *)defaultCalendar;
++ (NSCalendar *)defaultCalendar;
+
+/*!
+ 
  Class default date normalisation selector accessors.
  
  - defaultDateNormalisationSelector defaults to this value
