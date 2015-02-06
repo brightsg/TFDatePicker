@@ -33,6 +33,19 @@
 	return self;
 }
 
+- (void)dealloc
+{
+    // remove observers
+    
+    // unregister for notifications
+    
+    // set any non-weak delegates to nil
+    _popover.delegate = nil;
+    
+    // invalidate any timers
+
+}
+
 #pragma mark -
 #pragma mark Accessors
 
