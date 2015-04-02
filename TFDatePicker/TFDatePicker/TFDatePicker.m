@@ -25,6 +25,7 @@ static char TFValueBindingContext;
 @property CGFloat imageOffsetX;
 @property CGFloat imageOffsetY;
 @property CGFloat imageOpacity;
+@property (strong,nonatomic) NSButton *showPopoverButton;
 
 - (void)performClick:(id)sender;
 @end
@@ -136,19 +137,7 @@ static NSDate * m_referenceDate;
     self.promptImage = [frameworkBundle imageForResource:@"prompt"];
     
     // button
-	NSButton *showPopoverButton = [[NSButton alloc] initWithFrame:NSZeroRect];
-	showPopoverButton.buttonType = NSMomentaryChangeButton;
-	showPopoverButton.bezelStyle = NSInlineBezelStyle;
-	showPopoverButton.bordered = NO;
-	showPopoverButton.imagePosition = NSImageOnly;
-    showPopoverButton.toolTip = NSLocalizedString(@"Show date picker panel", "Datepicker button tool tip");
-    
-	showPopoverButton.image = [frameworkBundle imageForResource:@"calendar"];
-	[showPopoverButton.cell setHighlightsBy:NSContentsCellMask];
-
-	[showPopoverButton setTranslatesAutoresizingMaskIntoConstraints:NO];
-	showPopoverButton.target = self;
-	showPopoverButton.action = @selector(performClick:);
+	NSButton *showPopoverButton = self.showPopoverButton;
 	[self addSubview:showPopoverButton];
 
     self.imageOffsetY = 3;
@@ -371,6 +360,35 @@ static NSDate * m_referenceDate;
     _showPromptWhenEmpty = showPromptWhenEmpty;
     
     [self needsDisplay];
+}
+
+- (void)setEnabled:(BOOL)enabled
+{
+    [super setEnabled:enabled];
+    self.showPopoverButton.enabled = enabled;
+}
+
+- (NSButton *)showPopoverButton
+{
+    if (!_showPopoverButton) {
+        NSBundle *frameworkBundle = [NSBundle bundleForClass:[self class]];
+        
+        _showPopoverButton = [[NSButton alloc] initWithFrame:NSZeroRect];
+        _showPopoverButton.buttonType = NSMomentaryChangeButton;
+        _showPopoverButton.bezelStyle = NSInlineBezelStyle;
+        _showPopoverButton.bordered = NO;
+        _showPopoverButton.imagePosition = NSImageOnly;
+        _showPopoverButton.toolTip = NSLocalizedString(@"Show date picker panel", "Datepicker button tool tip");
+        
+        _showPopoverButton.image = [frameworkBundle imageForResource:@"calendar"];
+        [_showPopoverButton.cell setHighlightsBy:NSContentsCellMask];
+        
+        [_showPopoverButton setTranslatesAutoresizingMaskIntoConstraints:NO];
+        _showPopoverButton.target = self;
+        _showPopoverButton.action = @selector(performClick:);
+    }
+    
+    return _showPopoverButton;
 }
 
 #pragma mark -
