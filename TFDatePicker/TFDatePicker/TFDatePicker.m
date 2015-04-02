@@ -16,7 +16,7 @@ static char TFValueBindingContext;
 
 @property (strong) TFDatePickerPopoverController *datePickerViewController;
 @property (nonatomic) BOOL empty;
-@property (strong) NSColor *prevTextColor;
+@property (strong) NSColor *visibleTextColor;
 @property (assign) BOOL warningIssued;
 
 @property (strong) id valueBindingObservedObject;
@@ -334,24 +334,24 @@ static NSDate * m_referenceDate;
         }
 
         // match text to background
-        if (!self.prevTextColor) {
-            self.prevTextColor = self.textColor;
+        if (!self.visibleTextColor) {
+            self.visibleTextColor = self.textColor;
             [super setTextColor:self.backgroundColor];
         }
     } else {
         
         // reset text color
-        if (self.prevTextColor) {
-            [super setTextColor:self.prevTextColor];
-            self.prevTextColor = nil;
+        if (self.visibleTextColor) {
+            [super setTextColor:self.visibleTextColor];
+            self.visibleTextColor = nil;
         }
     }
 }
 
 - (void)setTextColor:(NSColor *)color
 {
-    if (self.empty && self.prevTextColor) {
-        self.prevTextColor = color;
+    if (self.empty && self.visibleTextColor) {
+        self.visibleTextColor = color;
     } else {
         [super setTextColor:color];
     }
