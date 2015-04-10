@@ -203,7 +203,13 @@ static NSDate * m_referenceDate;
     }
     
     if (drawImage) {
-        [image setFlipped:NO];
+        
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+        if ([image respondsToSelector:@selector(setFlipped:)]) {
+            [image setFlipped:NO];
+        }
+#pragma clang diagnostic pop
         
         CGFloat imageHeight = image.size.height;
         CGFloat imageWidth = image.size.width;
