@@ -22,6 +22,7 @@
 @property (strong) NSDate *date2;
 @property (strong) NSDate *date3;
 @property (strong) NSDate *date4;
+@property (strong) NSDate *dateStandard;
 @property (nonatomic, assign) BOOL allDay;
 
 @end
@@ -64,7 +65,7 @@
 	self.date2 = [NSDate date];
     self.date3 = [NSDate dateWithTimeIntervalSinceReferenceDate:0];
     self.date4 = nil;
-    
+    self.dateStandard = [NSDate date];
     self.allDay = YES;
 }
 
