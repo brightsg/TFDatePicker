@@ -53,6 +53,36 @@
 
 /*!
  
+ Class default reference date accessors.
+ 
+ - minDate defaults to this value
+ 
+ */
++ (void)setDefaultMinDate:(NSDate *)defaultDate;
++ (NSDate *)defaultMinDate;
+
+/*!
+ 
+ Class default reference date accessors.
+ 
+ - maxDate defaults to this value
+ 
+ */
++ (void)setDefaultMaxDate:(NSDate *)defaultDate;
++ (NSDate *)defaultMaxDate;
+
+/*!
+ 
+ Class default delegate accessors.
+ 
+ - delegate defaults to this value
+ 
+ */
++ (void)setDefaultDelegate:(id)delegate;
++ (id)defaultDelegate;
+
+/*!
+ 
  Returns YES if no date displayed.
  
  */

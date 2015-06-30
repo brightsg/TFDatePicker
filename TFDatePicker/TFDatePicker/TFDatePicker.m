@@ -34,9 +34,9 @@ static char TFValueBindingContext;
 
 
 #pragma mark -
-#pragma mark Localization
+#pragma mark Localization defaults
 
-static NSTimeZone *m_defaultTimeZone;
+static __strong NSTimeZone *m_defaultTimeZone;
 
 + (void)setDefaultTimeZone:(NSTimeZone *)defaultTimeZone
 {
@@ -50,7 +50,7 @@ static NSTimeZone *m_defaultTimeZone;
     return m_defaultTimeZone;
 }
 
-static NSCalendar *m_defaultCalendar;
+static __strong NSCalendar *m_defaultCalendar;
 
 + (void)setDefaultCalendar:(NSCalendar *)defaultCalendar
 {
@@ -62,6 +62,51 @@ static NSCalendar *m_defaultCalendar;
 {
     // defaults to nil
     return m_defaultCalendar;
+}
+
+#pragma mark -
+#pragma mark Date range defaults
+
+static __strong NSDate *m_defaultMinDate;
+
++ (void)setDefaultMinDate:(NSDate *)defaultDate
+{
+    m_defaultMinDate = defaultDate;
+}
+
++ (NSDate *)defaultMinDate
+{
+    // defaults to nil
+    return m_defaultMinDate;
+}
+
+static __strong NSDate *m_defaultMaxDate;
+
++ (void)setDefaultMaxDate:(NSDate *)defaultDate
+{
+    m_defaultMaxDate = defaultDate;
+}
+
++ (NSDate *)defaultMaxDate
+{
+    // defaults to nil
+    return m_defaultMaxDate;
+}
+
+#pragma mark -
+#pragma mark Delegate default
+
+static __strong id m_defaultDelegate;
+
++ (void)setDefaultDelegate:(id)delegate
+{
+    m_defaultDelegate = delegate;
+}
+
++ (id)defaultDelegate
+{
+    // defaults to nil
+    return m_defaultDelegate;
 }
 
 #pragma mark -
@@ -128,7 +173,7 @@ static NSDate * m_referenceDate;
 }
 
 #pragma mark -
-#pragma mark Nib loading
+#pragma mark Lifecycle
  
 - (void)awakeFromNib
 {
@@ -157,12 +202,12 @@ static NSDate * m_referenceDate;
         [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(-2)-[showPopoverButton(16)]" options:0 metrics:nil views:views]];
     }
 
-    // override calendar with default
+    // override -calendar with default
     if ([[self class] defaultCalendar]) {
         self.calendar = [[self class] defaultCalendar];
     }
 
-    // override timezone with default
+    // override- timezone with default
     if ([[self class] defaultTimeZone]) {
         self.timeZone = [[self class] defaultTimeZone];
     }
@@ -172,8 +217,30 @@ static NSDate * m_referenceDate;
         self.dateNormalisationSelector  = [[self class] defaultDateNormalisationSelector];
     }
 
+    // override -minDate with default
+    if ([[self class] defaultMinDate]) {
+        self.minDate = [[self class] defaultMinDate];
+    }
+
+    // override -maxDate with default
+    if ([[self class] defaultMaxDate]) {
+        self.maxDate = [[self class] defaultMaxDate];
+    }
+    
+    // override -delegate with default
+    if ([[self class] defaultDelegate]) {
+        [(NSDatePickerCell *)(self.cell) setDelegate:[[self class] defaultDelegate]];
+    }
+    
     // set reference date
     self.referenceDate = [self.class defaultReferenceDate];
+    
+}
+
+- (void)dealloc
+{
+    [self removeValueBindingObservation];
+    self.delegate = nil;
 }
 
 #pragma mark -
@@ -223,9 +290,12 @@ static NSDate * m_referenceDate;
 #pragma mark NSDatePickerCellDelegate
 
 - (void)datePickerCell:(NSDatePickerCell *)aDatePickerCell validateProposedDateValue:(NSDate **)proposedDateValue timeInterval:(NSTimeInterval *)proposedTimeInterval {
+    
+    // forward delegate request from popover date picker cell
 	if (self.delegate) {
 		[self.delegate datePickerCell:aDatePickerCell validateProposedDateValue:proposedDateValue timeInterval:proposedTimeInterval];
 	}
+    
 }
 
 #pragma mark -
@@ -397,6 +467,16 @@ static NSDate * m_referenceDate;
     return _showPopoverButton;
 }
 
+- (void)setObjectValue:(id)objectValue
+{
+    [super setObjectValue:objectValue];
+}
+
+- (void)setStringValue:(NSString *)stringValue
+{
+    [super setStringValue:stringValue];
+}
+
 #pragma mark -
 #pragma mark Binding support
 
@@ -513,7 +593,6 @@ static NSDate * m_referenceDate;
 #pragma mark -
 #pragma mark KVO
 
-
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
     if (context == &TFValueBindingContext) {
@@ -548,14 +627,6 @@ static NSDate * m_referenceDate;
         [self updateControlValue:[self referenceDate]];
     }
     [super mouseDown:theEvent];
-}
-
-#pragma mark -
-#pragma mark KVO
-
-- (void)dealloc
-{
-    [self removeValueBindingObservation];
 }
 
 @end
