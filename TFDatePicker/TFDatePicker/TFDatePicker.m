@@ -308,6 +308,7 @@ static NSDate * m_referenceDate;
     }
     
     self.datePickerViewController = [[TFDatePickerPopoverController alloc] init];
+    [self.datePickerViewController view]; // load UI
     
 	if (self.isEnabled) {
         

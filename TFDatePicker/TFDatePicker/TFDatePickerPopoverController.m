@@ -26,8 +26,6 @@
     // load nib from framework bundle
 	if ((self = [super initWithNibName:@"TFDatePicker" bundle:[NSBundle bundleForClass:[TFDatePicker class]]])) {
         
-        // load the nib now
-        [self view];
  	}
 
 	return self;
