@@ -8,14 +8,17 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface TFDatePickerPopoverController : NSViewController <NSPopoverDelegate>;
+@interface TFDatePickerPopoverController : NSViewController <NSPopoverDelegate, NSTextDelegate>;
 
-@property (strong, readonly) NSDatePicker *datePicker;
 @property (strong) NSPopover *popover;
 @property (weak) id <NSPopoverDelegate> delegate;
 @property (assign) BOOL allowEmptyDate;
 @property (assign) BOOL updateControlValueOnClose;
+@property (strong, nonatomic) NSString *dateFieldPlaceholder;
 
 - (IBAction)showDatePickerRelativeToRect:(NSRect)rect inView:(NSView *)view completionHander:(void(^)(NSDate *selectedDate))completionHandler;
+
+- (void)setDate:(NSDate *)date locale:(NSLocale *)locale calendar:(NSCalendar *)calendar timezone:(NSTimeZone *)timezone elements:(NSDatePickerElementFlags)elements;
+
 
 @end

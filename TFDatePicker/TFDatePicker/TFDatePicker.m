@@ -164,6 +164,21 @@ static NSDate * m_referenceDate;
 }
 
 #pragma mark -
+#pragma mark Reference date
+
+static __strong NSString *m_defaultDateFieldPlaceHolder;
+
++ (void)setDefaultDateFieldPlaceHolder:(NSString *)dateFieldPlaceHolder
+{
+    m_defaultDateFieldPlaceHolder = dateFieldPlaceHolder;
+}
+
++ (NSString *)defaultDateFieldPlaceHolder
+{
+    return m_defaultDateFieldPlaceHolder;
+}
+
+#pragma mark -
 #pragma mark Initialization
 
 + (void)initialize
@@ -207,7 +222,7 @@ static NSDate * m_referenceDate;
         self.calendar = [[self class] defaultCalendar];
     }
 
-    // override- timezone with default
+    // override -timezone with default
     if ([[self class] defaultTimeZone]) {
         self.timeZone = [[self class] defaultTimeZone];
     }
@@ -230,6 +245,11 @@ static NSDate * m_referenceDate;
     // override -delegate with default
     if ([[self class] defaultDelegate]) {
         [(NSDatePickerCell *)(self.cell) setDelegate:[[self class] defaultDelegate]];
+    }
+    
+    // override -dateFieldPlaceHolder with default
+    if ([[self class] defaultDateFieldPlaceHolder]) {
+        self.dateFieldPlaceHolder = [[self class] defaultDateFieldPlaceHolder];
     }
     
     // set reference date
@@ -307,26 +327,41 @@ static NSDate * m_referenceDate;
         return;
     }
     
-    self.datePickerViewController = [[TFDatePickerPopoverController alloc] init];
-    [self.datePickerViewController view]; // load UI
-    
 	if (self.isEnabled) {
         
-        if (self.empty) {
-            [self updateControlValue:[self referenceDate]];
+        NSDate *date = nil;
+        if (!self.empty) {
+            date = self.dateValue;
         }
         
-        // configure the popover date picker
-		self.datePickerViewController.datePicker.dateValue = self.dateValue;
-        self.datePickerViewController.datePicker.calendar = self.calendar;
-        self.datePickerViewController.datePicker.timeZone = self.timeZone;
-        self.datePickerViewController.datePicker.locale = self.locale;
-		[self.datePickerViewController.datePicker setDatePickerElements:self.datePickerElements];
+        if (self.window.firstResponder != self) {
+            [self.window makeFirstResponder:self];
+        }
         
+        // create view controller
+        self.datePickerViewController = [[TFDatePickerPopoverController alloc] init];
+        [self.datePickerViewController view]; // load
+        [self.datePickerViewController setDate:date
+                                        locale:self.locale
+                                      calendar:self.calendar
+                                      timezone:self.timeZone
+                                      elements:self.datePickerElements];
+        
+        // configure the popover date picker
 		self.datePickerViewController.delegate = self;
         self.datePickerViewController.allowEmptyDate = self.allowEmptyDate;
+        self.datePickerViewController.dateFieldPlaceholder = self.dateFieldPlaceHolder;
         
-		[_datePickerViewController showDatePickerRelativeToRect:[sender bounds] inView:sender completionHander:^(NSDate *selectedDate) {
+        // get display location
+        NSEvent *event = [NSApp currentEvent];
+        NSRect clickRect = [sender bounds];
+        if (event.type == NSLeftMouseDown || event.type == NSRightMouseDown) {
+            NSPoint pt = [sender convertPoint:[event locationInWindow] fromView:nil];
+            clickRect = NSMakeRect(pt.x, pt.y, 1, 1);
+        }
+        
+        // show the popover
+		[_datePickerViewController showDatePickerRelativeToRect:clickRect inView:sender completionHander:^(NSDate *selectedDate) {
             
             if (_datePickerViewController.updateControlValueOnClose) {
                 [self updateControlValue:selectedDate];
@@ -358,7 +393,8 @@ static NSDate * m_referenceDate;
 {
     if (self.allowEmptyDate) {
         self.empty = !dateValue || (id)dateValue == [NSNull null] ? YES : NO;
-    } else {
+    }
+    else {
         self.empty = NO;
     }
     
@@ -404,7 +440,8 @@ static NSDate * m_referenceDate;
             self.visibleTextColor = self.textColor;
             [super setTextColor:self.backgroundColor];
         }
-    } else {
+    }
+    else {
         
         // reset text color
         if (self.visibleTextColor) {
@@ -523,7 +560,8 @@ static NSDate * m_referenceDate;
         // update the bound object
         if (isValid) {
             [observedObject setValue:bindingValue forKeyPath:keyPath];
-        } else {
+        }
+        else {
             
             // close the popver
             self.datePickerViewController.updateControlValueOnClose = NO;
@@ -537,7 +575,8 @@ static NSDate * m_referenceDate;
             }];
         }
         
-    } else {
+    }
+    else {
         self.dateValue = date;
     }
 }
@@ -601,11 +640,13 @@ static NSDate * m_referenceDate;
         
         if (!date && self.allowEmptyDate) {
             self.empty = YES;
-        } else {
+        }
+        else {
             self.empty = NO;
         }
         
-    } else {
+    }
+    else {
         [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
     }
 }
@@ -616,18 +657,35 @@ static NSDate * m_referenceDate;
 - (void)keyDown:(NSEvent *)theEvent
 {
     if (self.empty) {
-        [self updateControlValue:[self referenceDate]];
+        [self performClick:self];
     }
     [super keyDown:theEvent];
 }
 
 - (void)mouseDown:(NSEvent *)theEvent
 {
-    // TODO: add a context menu to allow clearing of current date
-    if (self.empty) {
-        [self updateControlValue:[self referenceDate]];
+    if (self.empty || theEvent.clickCount == 2) {
+        if (![self eventInStepper:theEvent]) {
+            [self performClick:self];
+        }
     }
     [super mouseDown:theEvent];
+}
+
+- (void)rightMouseDown:(NSEvent *)theEvent
+{
+    if (![self eventInStepper:theEvent]) {
+        [self.window makeFirstResponder:self];
+        [self performClick:self];
+    } else {
+        [super mouseDown:theEvent];
+    }
+}
+
+- (BOOL)eventInStepper:(NSEvent *)event
+{
+    NSPoint pt = [self convertPoint:[event locationInWindow] fromView:nil];
+    return self.bounds.size.width - pt.x <= 20 ? YES : NO;
 }
 
 @end

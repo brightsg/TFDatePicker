@@ -83,6 +83,16 @@
 
 /*!
  
+ Class default delegate accessors.
+ 
+ - dateFieldPlaceHolder defaults to this value
+ 
+ */
++ (void)setDefaultDateFieldPlaceHolder:(NSString *)dateFieldPlaceHolder;
++ (NSString *)defaultDateFieldPlaceHolder;
+
+/*!
+ 
  Returns YES if no date displayed.
  
  */
@@ -128,4 +138,14 @@
  
  */
 - (void)updateControlValue:(NSDate *)date;
+
+/*!
+ 
+ Update the control's value.
+ 
+ Date field place holder text.
+ 
+ */
+@property (strong) NSString *dateFieldPlaceHolder;
+
 @end
