@@ -515,6 +515,19 @@ static __strong NSString *m_defaultDateFieldPlaceHolder;
     [super setStringValue:stringValue];
 }
 
+- (BOOL)becomeFirstResponder
+{
+    BOOL result = [super becomeFirstResponder];
+    if (result && self.empty) {
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self performClick:self];
+        });
+    }
+    
+    return result;
+}
+
 #pragma mark -
 #pragma mark Binding support
 
