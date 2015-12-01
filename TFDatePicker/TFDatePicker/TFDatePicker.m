@@ -11,6 +11,7 @@
 #import "TFDatePickerPopoverController.h"
 
 static char TFValueBindingContext;
+static TFDatePickerPopoverController *m_currentDatePickerViewController;
 
 @interface TFDatePicker ()
 
@@ -254,7 +255,6 @@ static __strong NSString *m_defaultDateFieldPlaceHolder;
     
     // set reference date
     self.referenceDate = [self.class defaultReferenceDate];
-    
 }
 
 - (void)dealloc
@@ -323,8 +323,25 @@ static __strong NSString *m_defaultDateFieldPlaceHolder;
 
 - (void)performClick:(id)sender {
     
-    if (self.datePickerViewController) {
+    if (self.datePickerViewController && self.datePickerViewController.popover.isShown) {
         return;
+    }
+    
+    // validate the sender
+    NSView *senderView = nil;
+    if (![sender isKindOfClass:[NSView class]] || !sender) {
+        senderView = self;
+    }
+    else {
+        senderView = sender;
+    }
+    if (!senderView.window) {
+        return;
+    }
+    
+    if (m_currentDatePickerViewController) {
+        [m_currentDatePickerViewController.popover close];
+        m_currentDatePickerViewController = nil;
     }
     
 	if (self.isEnabled) {
@@ -340,6 +357,7 @@ static __strong NSString *m_defaultDateFieldPlaceHolder;
         
         // create view controller
         self.datePickerViewController = [[TFDatePickerPopoverController alloc] init];
+        m_currentDatePickerViewController = self.datePickerViewController;
         [self.datePickerViewController view]; // load
         [self.datePickerViewController setDate:date
                                         locale:self.locale
@@ -354,14 +372,14 @@ static __strong NSString *m_defaultDateFieldPlaceHolder;
         
         // get display location
         NSEvent *event = [NSApp currentEvent];
-        NSRect clickRect = [sender bounds];
+        NSRect clickRect = [senderView bounds];
         if (event.type == NSLeftMouseDown || event.type == NSRightMouseDown) {
-            NSPoint pt = [sender convertPoint:[event locationInWindow] fromView:nil];
+            NSPoint pt = [senderView convertPoint:[event locationInWindow] fromView:nil];
             clickRect = NSMakeRect(pt.x, pt.y, 1, 1);
         }
         
         // show the popover
-		[_datePickerViewController showDatePickerRelativeToRect:clickRect inView:sender completionHander:^(NSDate *selectedDate) {
+		[_datePickerViewController showDatePickerRelativeToRect:clickRect inView:senderView completionHander:^(NSDate *selectedDate) {
             
             if (_datePickerViewController.updateControlValueOnClose) {
                 [self updateControlValue:selectedDate];
@@ -377,6 +395,9 @@ static __strong NSString *m_defaultDateFieldPlaceHolder;
 
 - (void)popoverDidClose:(NSNotification *)notification
 {
+    if (self.datePickerViewController == m_currentDatePickerViewController) {
+        m_currentDatePickerViewController = nil;
+    }
     self.datePickerViewController = nil;
 }
 
@@ -524,7 +545,7 @@ static __strong NSString *m_defaultDateFieldPlaceHolder;
             [self performClick:self];
         });
     }
-    
+
     return result;
 }
 
@@ -675,14 +696,24 @@ static __strong NSString *m_defaultDateFieldPlaceHolder;
     [super keyDown:theEvent];
 }
 
+- (void)mouseUp:(NSEvent *)theEvent
+{
+    [super mouseUp:theEvent];
+    
+    if (self.empty && theEvent.clickCount == 1 && ![self eventInStepper:theEvent]) {
+        [self performClick:self];
+    }
+}
+
 - (void)mouseDown:(NSEvent *)theEvent
 {
-    if (self.empty || theEvent.clickCount == 2) {
+    [super mouseDown:theEvent];
+    
+    if (theEvent.clickCount == 2) {
         if (![self eventInStepper:theEvent]) {
             [self performClick:self];
         }
     }
-    [super mouseDown:theEvent];
 }
 
 - (void)rightMouseDown:(NSEvent *)theEvent
@@ -694,6 +725,7 @@ static __strong NSString *m_defaultDateFieldPlaceHolder;
         [super mouseDown:theEvent];
     }
 }
+
 
 - (BOOL)eventInStepper:(NSEvent *)event
 {
