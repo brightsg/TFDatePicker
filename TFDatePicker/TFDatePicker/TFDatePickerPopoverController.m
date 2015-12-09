@@ -135,7 +135,8 @@
 - (void)setDateFieldPlaceholder:(NSString *)dateFieldPlaceholder
 {
     _dateFieldPlaceholder = dateFieldPlaceholder;
-    self.dateTextField.placeholderString = dateFieldPlaceholder;
+    NSTextFieldCell *cell = self.dateTextField.cell;
+    cell.placeholderString = dateFieldPlaceholder;
 }
 
 #pragma mark -
