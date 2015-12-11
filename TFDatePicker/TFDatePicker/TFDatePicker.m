@@ -65,6 +65,20 @@ static __strong NSCalendar *m_defaultCalendar;
     return m_defaultCalendar;
 }
 
+static __strong NSLocale *m_defaultLocale;
+
++ (void)setDefaultLocale:(NSLocale *)defaultLocale
+{
+    m_defaultLocale = defaultLocale;
+    
+}
+
++ (NSLocale *)defaultLocale
+{
+    // defaults to nil
+    return m_defaultLocale;
+}
+
 #pragma mark -
 #pragma mark Date range defaults
 
@@ -226,6 +240,11 @@ static __strong NSString *m_defaultDateFieldPlaceHolder;
     // override -timezone with default
     if ([[self class] defaultTimeZone]) {
         self.timeZone = [[self class] defaultTimeZone];
+    }
+
+    // override -locale with default
+    if ([[self class] defaultLocale]) {
+        self.locale = [[self class] defaultLocale];
     }
     
     // override date normalization selector

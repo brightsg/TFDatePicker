@@ -33,6 +33,16 @@
 
 /*!
  
+ Class default locale accessors.
+ 
+ - locale defaults to this value
+ 
+ */
++ (void)setDefaultLocale:(NSLocale *)defaultLocale;
++ (NSLocale *)defaultLocale;
+
+/*!
+ 
  Class default date normalisation selector accessors.
  
  - defaultDateNormalisationSelector defaults to this value
