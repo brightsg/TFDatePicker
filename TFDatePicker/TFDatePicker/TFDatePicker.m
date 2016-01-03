@@ -20,8 +20,6 @@ static TFDatePickerPopoverController *m_currentDatePickerViewController;
 @property (strong) NSColor *visibleTextColor;
 @property (assign) BOOL warningIssued;
 
-@property (strong) id valueBindingObservedObject;
-@property (strong) NSString *valueBindingObservedKeyPath;
 @property (strong) NSImage *promptImage;
 @property CGFloat imageOffsetX;
 @property CGFloat imageOffsetY;
@@ -659,27 +657,26 @@ static __strong NSString *m_defaultDateFieldPlaceHolder;
 
 - (void)addValueBindingObservationForObject:(id)object keyPath:(NSString *)keyPath
 {
-    self.valueBindingObservedObject = object;
-    self.valueBindingObservedKeyPath = keyPath;
-    
-    [self.valueBindingObservedObject addObserver:self
-                                      forKeyPath:self.valueBindingObservedKeyPath
-                                         options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial
-                                         context:&TFValueBindingContext];
+    [object addObserver:self
+             forKeyPath:keyPath
+                options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial
+                context:&TFValueBindingContext];
 }
 
 - (void)removeValueBindingObservation
 {
-    if (self.valueBindingObservedObject) {
+    NSDictionary *bindingInfo = [self infoForBinding:NSValueBinding];
+    id valueBindingObservedObject = bindingInfo[NSObservedObjectKey];
+    
+    if (valueBindingObservedObject) {
+        
+        NSString *valueBindingObservedKeyPath = bindingInfo[NSObservedKeyPathKey];
         
         @try {
-            [self.valueBindingObservedObject removeObserver:self forKeyPath:self.valueBindingObservedKeyPath];
+            [valueBindingObservedObject removeObserver:self forKeyPath:valueBindingObservedKeyPath];
         } @catch (NSException *e) {
             
         }
-        
-        self.valueBindingObservedObject = nil;
-        self.valueBindingObservedKeyPath = nil;
     }
 }
 
@@ -689,9 +686,10 @@ static __strong NSString *m_defaultDateFieldPlaceHolder;
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
     if (context == &TFValueBindingContext) {
-        NSDate *date = [object valueForKeyPath:keyPath];
+        id date = [object valueForKeyPath:keyPath];
         
-        if (!date && self.allowEmptyDate) {
+        // date may be a no selection marker on occasion
+        if ((!date || ![date isKindOfClass:[NSDate class]]) && self.allowEmptyDate) {
             self.empty = YES;
         }
         else {
