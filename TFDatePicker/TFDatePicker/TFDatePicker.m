@@ -686,10 +686,12 @@ static __strong NSString *m_defaultDateFieldPlaceHolder;
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
     if (context == &TFValueBindingContext) {
-        id date = [object valueForKeyPath:keyPath];
         
-        // date may be a no selection marker on occasion
-        if ((!date || ![date isKindOfClass:[NSDate class]]) && self.allowEmptyDate) {
+        // keyValue may not be a date if a binding value transformer is used
+        id keyValue = [object valueForKeyPath:keyPath];
+        
+        // keyValue may be a no selection marker on occasion
+        if ((!keyValue || keyValue == NSNoSelectionMarker) && self.allowEmptyDate) {
             self.empty = YES;
         }
         else {
