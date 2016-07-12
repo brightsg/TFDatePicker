@@ -556,7 +556,7 @@ static __strong NSString *m_defaultDateFieldPlaceHolder;
 - (BOOL)becomeFirstResponder
 {
     BOOL result = [super becomeFirstResponder];
-    if (result && self.empty) {
+    if (result && self.empty && self.showPopoverOnFirstResponderWhenEmpty) {
         
         dispatch_async(dispatch_get_main_queue(), ^{
             [self performClick:self];
@@ -610,7 +610,10 @@ static __strong NSString *m_defaultDateFieldPlaceHolder;
         
         // update the bound object
         if (isValid) {
-            [observedObject setValue:bindingValue forKeyPath:keyPath];
+            
+            if (![[observedObject valueForKeyPath:keyPath] isEqual:bindingValue]) {
+                [observedObject setValue:bindingValue forKeyPath:keyPath];
+            }
         }
         else {
             

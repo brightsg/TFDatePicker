@@ -158,4 +158,11 @@
  */
 @property (strong) NSString *dateFieldPlaceHolder;
 
+/*!
+ 
+ Show popover when empty control becomes first responder.
+ 
+ */
+@property (assign) BOOL showPopoverOnFirstResponderWhenEmpty;
+
 @end
