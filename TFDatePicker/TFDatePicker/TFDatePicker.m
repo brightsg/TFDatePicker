@@ -630,20 +630,22 @@ static __strong NSString *m_defaultDateFieldPlaceHolder;
         id observedObject = [bindingInfo objectForKey:NSObservedObjectKey];
         NSString *keyPath = [bindingInfo valueForKey:NSObservedKeyPathKey];
         
-        // validate
+        // validate now?
+        BOOL isValid = YES;
         NSError *error = nil;
-        BOOL isValid = [observedObject validateValue:&date forKeyPath:keyPath error:&error];
+        if ([options[NSValidatesImmediatelyBindingOption] boolValue]) {
+            isValid = [observedObject validateValue:&date forKeyPath:keyPath error:&error];
+        }
         
         // update the bound object
         if (isValid) {
-            
             if (![[observedObject valueForKeyPath:keyPath] isEqual:bindingValue]) {
                 [observedObject setValue:bindingValue forKeyPath:keyPath];
             }
         }
         else {
             
-            // close the popver
+            // close the popover
             self.datePickerViewController.updateControlValueOnClose = NO;
             [self.datePickerViewController.popover close];
             
