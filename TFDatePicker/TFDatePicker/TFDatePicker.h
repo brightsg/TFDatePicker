@@ -165,4 +165,11 @@
  */
 @property (assign) BOOL showPopoverOnFirstResponderWhenEmpty;
 
+/*!
+ 
+ Show popover when empty control is clicked.
+ 
+ */
+@property (assign) BOOL showPopoverOnClickWhenEmpty;
+
 @end

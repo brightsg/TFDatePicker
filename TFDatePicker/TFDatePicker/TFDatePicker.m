@@ -202,7 +202,33 @@ static __strong NSString *m_defaultDateFieldPlaceHolder;
 
 #pragma mark -
 #pragma mark Lifecycle
- 
+
+- (id)initWithCoder:(NSCoder *)coder
+{
+    self = [super initWithCoder:coder];
+    if (self) {
+        [self initConfig];
+    }
+    
+    return self;
+}
+
+- (id)initWithFrame:(NSRect)frameRect
+{
+    self = [super initWithFrame:frameRect];
+    if (self) {
+        [self initConfig];
+    }
+    
+    return self;
+}
+
+- (void)initConfig
+{
+    _showPopoverOnFirstResponderWhenEmpty = YES;
+    _showPopoverOnClickWhenEmpty = YES;
+}
+
 - (void)awakeFromNib
 {
     // access framework bundle
@@ -731,7 +757,12 @@ static __strong NSString *m_defaultDateFieldPlaceHolder;
 {
     [super mouseDown:theEvent];
     
-    if (theEvent.clickCount == 2) {
+    if (theEvent.clickCount == 1) {
+        if (![self eventInStepper:theEvent] && self.empty && self.showPopoverOnClickWhenEmpty) {
+            [self performClick:self];
+        }
+    }
+    else if (theEvent.clickCount == 2) {
         if (![self eventInStepper:theEvent]) {
             [self performClick:self];
         }
@@ -747,7 +778,6 @@ static __strong NSString *m_defaultDateFieldPlaceHolder;
         [super mouseDown:theEvent];
     }
 }
-
 
 - (BOOL)eventInStepper:(NSEvent *)event
 {
