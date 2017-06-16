@@ -6,6 +6,8 @@
 //  Copyright 2010 Tom Fewster. All rights reserved.
 //
 
+#include <Carbon/Carbon.h>
+
 #import "TFDatePicker.h"
 #import "TFDatePickerCell.h"
 #import "TFDatePickerPopoverController.h"
@@ -582,7 +584,25 @@ static __strong NSString *m_defaultDateFieldPlaceHolder;
 - (BOOL)becomeFirstResponder
 {
     BOOL result = [super becomeFirstResponder];
+
     if (result && self.empty && self.showPopoverOnFirstResponderWhenEmpty) {
+        
+        // allow popup if we have navigated using the TAB key
+        NSEvent *event = [NSApp currentEvent];
+        if (event.type == NSEventTypeKeyDown) {
+            if (event.keyCode != kVK_Tab) {
+                return result;
+            }
+        }
+        
+        // allow popup if we have actually clicked the control.
+        // this prevents popups from occurring spontaneously which just looks odd in many cases.
+        else if (event.type == NSLeftMouseUp) {
+            NSPoint pt = [self convertPoint:[event locationInWindow] fromView:nil];
+            if (!NSPointInRect(pt, self.bounds)) {
+                return result;
+            }
+        }
         
         dispatch_async(dispatch_get_main_queue(), ^{
             [self performClick:self];
