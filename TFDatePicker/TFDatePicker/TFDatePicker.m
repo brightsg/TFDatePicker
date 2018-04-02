@@ -424,10 +424,11 @@ static __strong NSString *m_defaultDateFieldPlaceHolder;
         }
         
         // show the popover
-		[_datePickerViewController showDatePickerRelativeToRect:clickRect inView:senderView completionHander:^(NSDate *selectedDate) {
+        __weak TFDatePicker *welf = self;
+		[self.datePickerViewController showDatePickerRelativeToRect:clickRect inView:senderView completionHander:^(NSDate *selectedDate) {
             
-            if (_datePickerViewController.updateControlValueOnClose) {
-                [self updateControlValue:selectedDate];
+            if (welf.datePickerViewController.updateControlValueOnClose) {
+                [welf updateControlValue:selectedDate];
             }
             
 		}];
