@@ -475,6 +475,12 @@ static __strong NSString *m_defaultDateFieldPlaceHolder;
     [super setDateValue:dateValue];
 }
 
+- (void)setAllowEmptyDate:(BOOL)allowEmptyDate
+{
+    _allowEmptyDate = allowEmptyDate;
+    self.dateValue = self.dateValue;
+}
+
 - (NSDate *)dateValue
 {
     if (self.empty) {
