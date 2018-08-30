@@ -661,7 +661,7 @@ static __strong NSString *m_defaultDateFieldPlaceHolder;
         BOOL isValid = YES;
         NSError *error = nil;
         if ([options[NSValidatesImmediatelyBindingOption] boolValue]) {
-            isValid = [observedObject validateValue:&date forKeyPath:keyPath error:&error];
+            isValid = [observedObject validateValue:&bindingValue forKeyPath:keyPath error:&error];
         }
         
         // update the bound object
