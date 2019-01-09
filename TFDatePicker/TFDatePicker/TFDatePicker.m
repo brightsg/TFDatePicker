@@ -14,20 +14,28 @@
 
 static char TFValueBindingContext;
 static TFDatePickerPopoverController *m_currentDatePickerViewController;
+static BOOL(^m_canDisplayPopOverBlock)(NSView *, BOOL force);
 
 @interface TFDatePicker ()
 
+// controllers
 @property (strong) TFDatePickerPopoverController *datePickerViewController;
-@property (nonatomic) BOOL empty;
-@property (strong) NSColor *visibleTextColor;
-@property (assign) BOOL warningIssued;
 
+// views
+@property (strong,nonatomic) NSButton *showPopoverButton;
+
+// objects
+@property (strong) NSColor *visibleTextColor;
 @property (strong) NSImage *promptImage;
+
+// primitives
+@property (nonatomic) BOOL empty;
+@property (assign) BOOL warningIssued;
 @property CGFloat imageOffsetX;
 @property CGFloat imageOffsetY;
 @property CGFloat imageOpacity;
-@property (strong,nonatomic) NSButton *showPopoverButton;
 
+// methods
 - (void)performClick:(id)sender;
 @end
 
@@ -160,6 +168,14 @@ static SEL m_defaultDateNormalisationSelector;
 }
 
 #pragma mark -
+#pragma mark Blocks
+
++ (void)setCanDisplayPopOverBlock:(BOOL(^)(NSView *, BOOL force))value
+{
+    m_canDisplayPopOverBlock = value;
+}
+
+#pragma mark -
 #pragma mark Reference date
 
 static NSDate * m_referenceDate;
@@ -229,6 +245,7 @@ static __strong NSString *m_defaultDateFieldPlaceHolder;
 {
     _showPopoverOnFirstResponderWhenEmpty = YES;
     _showPopoverOnClickWhenEmpty = YES;
+    _canDisplayPopOverBlock = m_canDisplayPopOverBlock;
 }
 
 - (void)awakeFromNib
@@ -368,6 +385,10 @@ static __strong NSString *m_defaultDateFieldPlaceHolder;
 
 - (void)performClick:(id)sender {
     
+    // validate if can display datepicker pop over
+    if (self.canDisplayPopOverBlock && !self.canDisplayPopOverBlock(self, NO)) return;
+    
+    // if datepicker is up ignore
     if (self.datePickerViewController && self.datePickerViewController.popover.isShown) {
         return;
     }
@@ -434,7 +455,6 @@ static __strong NSString *m_defaultDateFieldPlaceHolder;
 		}];
 	}
 }
-
 
 #pragma mark -
 #pragma mark NSPopoverDelegate

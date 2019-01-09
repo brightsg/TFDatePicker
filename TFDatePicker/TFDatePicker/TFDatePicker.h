@@ -103,6 +103,22 @@
 
 /*!
  
+ Class default pop over display validation block.
+ 
+ - canDisplayPopOverBlock defaults to this value
+ 
+ */
++ (void)setCanDisplayPopOverBlock:(BOOL(^)(NSView *, BOOL force))value;
+
+/*!
+ 
+ Define block to determine if popover display is allowed
+ 
+ */
+@property (strong) BOOL (^canDisplayPopOverBlock)(NSView *, BOOL);
+
+/*!
+ 
  Returns YES if no date displayed.
  
  */
