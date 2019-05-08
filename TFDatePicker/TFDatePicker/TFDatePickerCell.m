@@ -9,10 +9,6 @@
 #import "TFDatePickerCell.h"
 #import "TFDatePicker.h"
 
-@interface NSDatePickerCell()
-- (IBAction)_stepperCellValueChanged:(id)sender;
-@end
-
 @implementation TFDatePickerCell
 
 - (void)setShowsFirstResponder:(BOOL)showFR
@@ -38,15 +34,4 @@
     [super drawInteriorWithFrame:cellFrame inView:controlView];
 }
 
-// this is a private method.
-// seems like the only way to intercept the stepper call
-- (IBAction)_stepperCellValueChanged:(id)sender
-{
-    // exception raised if no picker elements defined.
-    // defining no elements and setting style to text only results in a collapsed control.
-    if (self.datePickerElements == 0) {
-        return;
-    }
-    [super _stepperCellValueChanged:sender];
-}
 @end

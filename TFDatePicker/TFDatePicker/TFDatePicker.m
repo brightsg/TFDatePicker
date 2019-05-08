@@ -25,6 +25,7 @@ static BOOL(^m_canDisplayPopOverBlock)(NSView *, BOOL force);
 @property (strong,nonatomic) NSButton *showPopoverButton;
 
 // objects
+@property (strong) NSColor *visibleTextColor;
 @property (strong) NSImage *promptImage;
 
 // primitives
@@ -33,7 +34,6 @@ static BOOL(^m_canDisplayPopOverBlock)(NSView *, BOOL force);
 @property CGFloat imageOffsetX;
 @property CGFloat imageOffsetY;
 @property CGFloat imageOpacity;
-@property (assign) NSDatePickerElementFlags currentDatePickerElements;
 
 // methods
 - (void)performClick:(id)sender;
@@ -246,7 +246,6 @@ static __strong NSString *m_defaultDateFieldPlaceHolder;
     _showPopoverOnFirstResponderWhenEmpty = YES;
     _showPopoverOnClickWhenEmpty = YES;
     _canDisplayPopOverBlock = m_canDisplayPopOverBlock;
-    _currentDatePickerElements = self.datePickerElements;
 }
 
 - (void)awakeFromNib
@@ -430,7 +429,7 @@ static __strong NSString *m_defaultDateFieldPlaceHolder;
                                         locale:self.locale
                                       calendar:self.calendar
                                       timezone:self.timeZone
-                                      elements:self.currentDatePickerElements];
+                                      elements:self.datePickerElements];
         
         // configure the popover date picker
 		self.datePickerViewController.delegate = self;
@@ -519,6 +518,8 @@ static __strong NSString *m_defaultDateFieldPlaceHolder;
     
     _empty = empty;
     
+    // there is no effective way of overridding the cell interior drawing (believe me, I really really tried)
+    // hence we camouflage the text.
     if (empty) {
         
         // cell class warning
@@ -527,18 +528,38 @@ static __strong NSString *m_defaultDateFieldPlaceHolder;
             NSLog(@"%@ requires cell of class %@ to be set in the nib in order to function correctly. This warning will be issued for each instance of the control that assigns the empty property to YES", [self className], [[[self class] cellClass] className]);
         }
 
-        if (self.datePickerElements != 0) {
-            self.currentDatePickerElements = self.datePickerElements;
+        // match text to background
+        if (!self.visibleTextColor) {
+            self.visibleTextColor = self.textColor;
+            [super setTextColor:self.backgroundColor];
         }
-        // setting the elements to 0 clears the control display.
-        // the legacy approach of setting the text color to the background color is not effective in DarkMode.
-        self.datePickerElements = 0;
-        // if we clear the picker elements and set style to text only the control collapses
-        //self.datePickerStyle = NSDatePickerStyleTextField;
     }
     else {
-        self.datePickerElements = self.currentDatePickerElements;
+        
+        // reset text color
+        if (self.visibleTextColor) {
+            [super setTextColor:self.visibleTextColor];
+            self.visibleTextColor = nil;
+        }
     }
+}
+
+- (void)setTextColor:(NSColor *)color
+{
+    if (self.empty && self.visibleTextColor) {
+        self.visibleTextColor = color;
+    } else {
+        [super setTextColor:color];
+    }
+}
+
+- (void)setBackgroundColor:(NSColor *)color
+{
+    if (self.empty) {
+        [super setTextColor:color];
+    }
+    
+    [super setBackgroundColor:color];
 }
 
 - (void)setShowPromptWhenEmpty:(BOOL)showPromptWhenEmpty
