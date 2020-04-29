@@ -450,8 +450,8 @@ static __strong NSString *m_defaultDateFieldPlaceHolder;
             
             if (welf.datePickerViewController.updateControlValueOnClose) {
                 [welf updateControlValue:selectedDate];
+                [self sendAction:self.action to:self.target];
             }
-            
 		}];
 	}
 }
