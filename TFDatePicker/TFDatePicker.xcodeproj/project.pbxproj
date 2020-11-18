@@ -26,6 +26,7 @@
 		AB81C3AC1923961D00CA7A3B /* TFDatePickerCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFDatePickerCell.h; sourceTree = "<group>"; };
 		AB81C3AD1923961D00CA7A3B /* TFDatePickerCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFDatePickerCell.m; sourceTree = "<group>"; };
 		AB81C3B01923AF4600CA7A3B /* TFDatePicker.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TFDatePicker.xib; sourceTree = "<group>"; };
+		ABFDF33525656EB700FCFE3F /* macOS-native-arch.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "macOS-native-arch.xcconfig"; sourceTree = "<group>"; };
 		E2D656E6160A18F100DEC117 /* TFDatePicker.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TFDatePicker.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E2D656E9160A18F100DEC117 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		E2D656EC160A18F100DEC117 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -57,6 +58,7 @@
 		E2D656DA160A18F000DEC117 = {
 			isa = PBXGroup;
 			children = (
+				ABFDF33525656EB700FCFE3F /* macOS-native-arch.xcconfig */,
 				E2D656EF160A18F100DEC117 /* TFDatePicker */,
 				E2D656E8160A18F100DEC117 /* Frameworks */,
 				E2D656E7160A18F100DEC117 /* Products */,
@@ -166,6 +168,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -271,6 +274,7 @@
 		};
 		E2D656FA160A18F100DEC117 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = ABFDF33525656EB700FCFE3F /* macOS-native-arch.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
