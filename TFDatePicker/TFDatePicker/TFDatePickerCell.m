@@ -26,6 +26,26 @@
 {
     // this draws all
     [super drawWithFrame:cellFrame inView:controlView];
+    
+    TFDatePicker *datePicker = (TFDatePicker *)controlView;
+    if (datePicker.enabled == NO && datePicker.empty) {
+        
+        // ugh. macOS 13 doesnt play nicely with setting text color to match background for nil values.
+        // nil values are rendered visible.
+        // rather than risk breaking that legacy logic we obliterate the problem.
+        if ([NSProcessInfo.new operatingSystemVersion].majorVersion >= 13) {
+            CGFloat imageOffsetX = 0;
+            if ([self datePickerStyle] == NSTextFieldAndStepperDatePickerStyle) {
+                imageOffsetX = 5 + 16 +2;
+            } else {
+                imageOffsetX = 5 + 2;
+            }
+            
+            NSBezierPath *path = [NSBezierPath bezierPathWithRect:NSMakeRect(cellFrame.origin.x + 2, cellFrame.origin.y +2, cellFrame.size.width - imageOffsetX, cellFrame.size.height - 4)];
+            [self.backgroundColor set];
+            [path fill];
+        }
+    }
 }
 
 - (void)drawInteriorWithFrame:(NSRect)cellFrame inView:(NSView *)controlView

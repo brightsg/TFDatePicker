@@ -364,7 +364,7 @@ static __strong NSString *m_defaultDateFieldPlaceHolder;
         CGFloat imageWidth = image.size.width;
         
         NSRect rectForBorders = NSMakeRect(rect.size.width - imageWidth - self.imageOffsetX, self.imageOffsetY, imageWidth, imageHeight);
-        [image drawInRect:rectForBorders fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:self.imageOpacity];
+        [image drawInRect:rectForBorders fromRect:NSZeroRect operation:NSCompositingOperationSourceOver fraction:self.imageOpacity];
     }
 }
 
@@ -439,7 +439,7 @@ static __strong NSString *m_defaultDateFieldPlaceHolder;
         // get display location
         NSEvent *event = [NSApp currentEvent];
         NSRect clickRect = [senderView bounds];
-        if (event.type == NSLeftMouseDown || event.type == NSRightMouseDown) {
+        if (event.type == NSEventTypeLeftMouseDown || event.type == NSEventTypeRightMouseDown) {
             NSPoint pt = [senderView convertPoint:[event locationInWindow] fromView:nil];
             clickRect = NSMakeRect(pt.x, pt.y, 1, 1);
         }
@@ -624,7 +624,7 @@ static __strong NSString *m_defaultDateFieldPlaceHolder;
         
         // allow popup if we have actually clicked the control.
         // this prevents popups from occurring spontaneously which just looks odd in many cases.
-        else if (event.type == NSLeftMouseUp) {
+        else if (event.type == NSEventTypeLeftMouseUp) {
             NSPoint pt = [self convertPoint:[event locationInWindow] fromView:nil];
             if (!NSPointInRect(pt, self.bounds)) {
                 return result;
