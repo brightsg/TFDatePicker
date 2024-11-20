@@ -246,6 +246,7 @@ static __strong NSString *m_defaultDateFieldPlaceHolder;
     _showPopoverOnFirstResponderWhenEmpty = YES;
     _showPopoverOnClickWhenEmpty = YES;
     _canDisplayPopOverBlock = m_canDisplayPopOverBlock;
+    self.clipsToBounds = YES;
 }
 
 - (void)awakeFromNib
